@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="three.js-master" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$USER_HOME$/Downloads/three.js-master" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$USER_HOME$/Downloads/three.js-master" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
