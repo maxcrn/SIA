@@ -1,7 +1,7 @@
 var game = {
 
-        w : 850,
-        h : 200,
+        w : 1200,
+        h : 800,
         fov : 75,
         player : {
 
@@ -80,24 +80,24 @@ var game = {
     view = {
 
         scene    : new THREE.Scene(),
-        camera   : new THREE.PerspectiveCamera( game.fov, game.w / game.h, .1, 1000 ),
+        camera   : new THREE.PerspectiveCamera( game.fov, window.innerWidth / window.innerHeight, .1, 1000 ),
         renderer : new THREE.WebGLRenderer({alpha:true})
     }
 
 // Set the size of the renderer to game dimensions
-view.renderer.setSize( game.w, game.h );
+view.renderer.setSize( window.innerWidth - 10, window.innerHeight);
 
 // Put the canvas element into document
-document.body.appendChild( view.renderer.domElement );
+document.body.appendChild( view.renderer.domElement);
 
 
 // Game elements
 
 var baton_geometry = new THREE.CubeGeometry(game.player.w,game.player.h,game.player.d);
 var cube_geometry = new THREE.CubeGeometry(game.ball.w,game.ball.h,game.ball.d);
-var lime_material = new THREE.MeshLambertMaterial( { color: 0xc6e645 } );
-var orange_material = new THREE.MeshLambertMaterial( { color: 0xee9418 } );
-var cream_material = new THREE.MeshLambertMaterial( { color: 0xfff9eb } );
+var lime_material = new THREE.MeshLambertMaterial( { color: 0x14A6F4 } );
+var orange_material = new THREE.MeshLambertMaterial( { color: 0xF41414 } );
+var cream_material = new THREE.MeshLambertMaterial( { color: 0xFFFFFF } );
 
 game.player.baton = new THREE.Mesh( baton_geometry, lime_material );
 game.player.baton.position.y += game.player.h/2;
@@ -116,8 +116,14 @@ view.scene.add( game.offender.baton );
 view.scene.add( game.ball.cube );
 
 var floor_geometry = new THREE.PlaneGeometry( 15, 10 );
-var brown_material = new THREE.MeshLambertMaterial( { color: 0x181009 } );
-game.stage.mesh = new THREE.Mesh( floor_geometry, brown_material );
+var brown_material = new THREE.MeshLambertMaterial( { color: 0x001862 } );
+var img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('Images/terrain-de-foot-1560x995.png')});
+img.map.needsUpdate = true;
+
+// plane
+game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+game.stage.mesh.overdraw = true;
+// game.stage.mesh = new THREE.Mesh( floor_geometry, brown_material );
 game.stage.mesh.material.side = THREE.DoubleSide;
 game.stage.mesh.rotation.x = 1.57079633;
 game.stage.mesh.position.z = -5;
@@ -127,8 +133,10 @@ view.scene.add( game.stage.mesh );
 
 // Player view
 view.camera.position.z = 2;
-view.camera.position.y = 3.5;
-view.camera.rotation.x = -0.3926990815;
+view.camera.position.y = 10;
+view.camera.position.x = 0;
+view.camera.rotation.x = -3.14159265/4;
+//view.camera.rotation.x = -0.3926990815;
 
 // Offender view
 //view.camera.position.z = -13;
