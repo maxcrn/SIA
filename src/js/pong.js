@@ -24,9 +24,9 @@ var game = {
         ball : {
 
             speed : .125,
-            w : .5,
-            h : .5,
-            d : .5,
+            w : .65,
+            h : .65,
+            d : 1,
             x : 0,
             z : 0,
             vel : {
@@ -95,18 +95,18 @@ document.body.appendChild( view.renderer.domElement);
 
 var baton_geometry = new THREE.CubeGeometry(game.player.w,game.player.h,game.player.d);
 var cube_geometry = new THREE.CubeGeometry(game.ball.w,game.ball.h,game.ball.d);
-var lime_material = new THREE.MeshLambertMaterial( { color: 0x14A6F4 } );
-var orange_material = new THREE.MeshLambertMaterial( { color: 0xF41414 } );
-var cream_material = new THREE.MeshLambertMaterial( { color: 0xFFFFFF } );
+var playerBaton = new THREE.MeshLambertMaterial( { color: 0x14A6F4 } );
+var opponentBaton = new THREE.MeshLambertMaterial( { color: 0xF41414 } );
 
-game.player.baton = new THREE.Mesh( baton_geometry, lime_material );
+game.player.baton = new THREE.Mesh( baton_geometry, playerBaton );
 game.player.baton.position.y += game.player.h/2;
 
-game.offender.baton = new THREE.Mesh( baton_geometry, orange_material );
+game.offender.baton = new THREE.Mesh( baton_geometry, opponentBaton );
 game.offender.baton.position.y += game.offender.h/2;
 game.offender.baton.position.z -= 10;
 
-game.ball.cube = new THREE.Mesh( cube_geometry, cream_material );
+//game.ball.cube = new THREE.Mesh( cube_geometry, ballGame );
+game.ball.cube = THREEx.SportBalls.createFootball();
 game.ball.cube.position.y += game.ball.h/2;
 
 game.ball.z = -5;
@@ -116,8 +116,8 @@ view.scene.add( game.offender.baton );
 view.scene.add( game.ball.cube );
 
 var floor_geometry = new THREE.PlaneGeometry( 15, 10 );
-var brown_material = new THREE.MeshLambertMaterial( { color: 0x001862 } );
-var img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('Images/terrain-de-foot-1560x995.png')});
+//var brown_material = new THREE.MeshLambertMaterial( { color: 0x0001862 } );
+var img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/terrain-de-foot-1560x995.png')});
 img.map.needsUpdate = true;
 
 // plane
