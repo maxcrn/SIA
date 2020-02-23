@@ -10,7 +10,8 @@ var game = {
             h : .5,
             d : .5,
             x : 0,
-            baton : null
+            baton : null,
+            score : 0
         },
         offender : {
 
@@ -19,7 +20,8 @@ var game = {
             h : .5,
             d : .5,
             x : 0,
-            baton : null
+            baton : null,
+            score : 0
         },
         ball : {
 
@@ -46,10 +48,58 @@ var game = {
 
             var ball_vel_z = game.ball.vel.z;
 
-            if(player){
+            var loader = new THREE.FontLoader();
 
-                game.player.score ++;
+            if(player === "Player" || (game.player.score == 0 && game.offender.score == 0)){
+                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
 
+                    var geometry = new THREE.TextGeometry( game.player.score.toString(), {
+                        font: font,
+                        size: 0.5,
+                        height: 0.05,
+                        curveSegments: 0.5,
+                        bevelEnabled: false,
+                        bevelThickness: 0.5,
+                        bevelSize: 0.5,
+                        bevelOffset: 0,
+                        bevelSegments: 0.5
+                    } );
+                    geometry.center();
+                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    mesh = new THREE.Mesh( geometry, material );
+                    mesh.position.x = 2.4;
+                    mesh.position.y = 5;
+                    mesh.position.z = 0;
+                    mesh.rotation.x = -3.14159265/4;
+                    mesh.name = "scorePlayer";
+                    view.scene.add( mesh );
+                } );
+            }
+
+            if(player === "Offender" || (game.player.score == 0 && game.offender.score == 0)) {
+                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+
+                    var geometry = new THREE.TextGeometry( game.offender.score.toString(), {
+                        font: font,
+                        size: 0.5,
+                        height: 0.05,
+                        curveSegments: 0.5,
+                        bevelEnabled: false,
+                        bevelThickness: 0.5,
+                        bevelSize: 0.5,
+                        bevelOffset: 0,
+                        bevelSegments: 0.5
+                    } );
+                    geometry.center();
+                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    mesh = new THREE.Mesh( geometry, material );
+                    mesh.position.x = -2.4;
+                    mesh.position.y = 5;
+                    mesh.position.z = -3;
+                    mesh.rotation.x = -3.14159265/4;
+                    mesh.name = "scoreOffender";
+                    view.scene.add( mesh );
+                } );
             }
 
             game.ball.z = -5;
@@ -117,7 +167,7 @@ view.scene.add( game.ball.cube );
 
 var floor_geometry = new THREE.PlaneGeometry( 15, 10 );
 //var brown_material = new THREE.MeshLambertMaterial( { color: 0x0001862 } );
-var img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/terrain-de-foot-1560x995.png')});
+var img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/soccerField.jpg')});
 img.map.needsUpdate = true;
 
 // plane
@@ -223,7 +273,11 @@ function render() {
         }else{
 
             //if(game.ball.z - (game.ball.d/2) < game.stage.z - (game.stage.h/2))
-            game.reset(game.player);
+
+            var scorePlayer = view.scene.getObjectByName( "scorePlayer" );
+            view.scene.remove(scorePlayer);
+            game.player.score ++;
+            game.reset("Player");
         }
     }
 
@@ -236,7 +290,10 @@ function render() {
         }else{
 
             //if(game.ball.z + (game.ball.d/2) > 0)
-            game.reset(game.offender);
+            var scoreOffender = view.scene.getObjectByName( "scoreOffender" );
+            view.scene.remove(scoreOffender);
+            game.offender.score ++;
+            game.reset("Offender");
         }
 
     }

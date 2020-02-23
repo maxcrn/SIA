@@ -4,6 +4,8 @@
  */
 var THREEx	= THREEx	|| {};
 
+/** Source : https://github.com/jeromeetienne/threex.sportballs */
+
 /**
  * THREEx extension
  * 
