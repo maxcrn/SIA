@@ -1,5 +1,6 @@
 var game = {
 
+        newLevel : 1,
         w : 1200,
         h : 800,
         fov : 75,
@@ -15,7 +16,8 @@ var game = {
         },
         offender : {
 
-            speed : 0.1025,
+            // speed : 0.1025,
+            speed : 0.06,
             w : 3,
             h : .5,
             d : .5,
@@ -42,6 +44,7 @@ var game = {
             w : 15,
             h : 10,
             z : -5,
+            level : 1,
             mesh : null
         },
         reset : function(player){
@@ -50,9 +53,148 @@ var game = {
 
             var loader = new THREE.FontLoader();
 
+            // Passage au niveau 2
+            if(game.player.score === 3 && game.stage.level === 1){
+                // Changement du score et du niveau
+                game.newLevel = 1;
+                game.player.score = 0;
+                game.offender.score = 0;
+                game.stage.level += 1;
+                // Changement de la balle
+                view.scene.remove(game.ball.cube);
+                game.ball.cube = THREEx.SportBalls.createTennis();
+                view.scene.add(game.ball.cube);
+                // Changement du terrain
+                view.scene.remove(game.stage.mesh);
+                img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/tennisField.png')});
+                img.map.needsUpdate = true;
+                game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+                game.stage.mesh.overdraw = true;
+                game.stage.mesh.material.side = THREE.DoubleSide;
+                game.stage.mesh.rotation.x = 1.57079633;
+                game.stage.mesh.position.z = -5;
+                view.scene.add( game.stage.mesh );
+                view.scene.add( game.stage.mesh );
+                // Changement de difficulté
+                game.offender.speed = 0.085;
+                // Affichage du niveau
+                var level = view.scene.getObjectByName( "Level" );
+                view.scene.remove(level);
+                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                    var geometry = new THREE.TextGeometry("Niveau 2", {
+                        font: font,
+                        size: 0.5,
+                        height: 0.05,
+                        curveSegments: 0.5,
+                        bevelEnabled: false,
+                        bevelThickness: 0.5,
+                        bevelSize: 0.5,
+                        bevelOffset: 0,
+                        bevelSegments: 0.5
+                    } );
+                    geometry.center();
+                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    mesh = new THREE.Mesh( geometry, material );
+                    mesh.position.x = -2.4;
+                    mesh.position.y = 5;
+                    mesh.position.z = -5;
+                    mesh.rotation.x = -3.14159265/4;
+                    mesh.name = "Level";
+                    view.scene.add( mesh );
+                } );
+            }
+
+            // Passage au niveau 3
+            if(game.player.score === 3 && game.stage.level === 2){
+                // Changement du score et du niveau
+                game.newLevel = 1
+                game.player.score = 0;
+                game.offender.score = 0;
+                game.stage.level += 1;
+                // Changement de la balle
+                view.scene.remove(game.ball.cube);
+                game.ball.cube = THREEx.SportBalls.createBasket();
+                view.scene.add(game.ball.cube);
+                // Changement du terrain
+                view.scene.remove(game.stage.mesh);
+                img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/basketballField.png')});
+                img.map.needsUpdate = true;
+                game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+                game.stage.mesh.overdraw = true;
+                game.stage.mesh.material.side = THREE.DoubleSide;
+                game.stage.mesh.rotation.x = 1.57079633;
+                game.stage.mesh.position.z = -5;
+                view.scene.add( game.stage.mesh );
+                view.scene.add( game.stage.mesh );
+                // Changement de difficulté
+                game.offender.speed = 0.11;
+                // Affichage du niveau
+                var level = view.scene.getObjectByName( "Level" );
+                view.scene.remove(level);
+                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                    var geometry = new THREE.TextGeometry("Niveau 3", {
+                        font: font,
+                        size: 0.5,
+                        height: 0.05,
+                        curveSegments: 0.5,
+                        bevelEnabled: false,
+                        bevelThickness: 0.5,
+                        bevelSize: 0.5,
+                        bevelOffset: 0,
+                        bevelSegments: 0.5
+                    } );
+                    geometry.center();
+                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    mesh = new THREE.Mesh( geometry, material );
+                    mesh.position.x = -2.4;
+                    mesh.position.y = 5;
+                    mesh.position.z = -5;
+                    mesh.rotation.x = -3.14159265/4;
+                    mesh.name = "Level";
+                    view.scene.add( mesh );
+                } );
+            }
+
+
+            // Affichage du Niveau 1
+            if(game.stage.level === 1  && game.newLevel === 1){
+                game.newLevel = 0;
+                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                    var geometry = new THREE.TextGeometry("Niveau 1", {
+                        font: font,
+                        size: 0.5,
+                        height: 0.05,
+                        curveSegments: 0.5,
+                        bevelEnabled: false,
+                        bevelThickness: 0.5,
+                        bevelSize: 0.5,
+                        bevelOffset: 0,
+                        bevelSegments: 0.5
+                    } );
+                    geometry.center();
+                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    mesh = new THREE.Mesh( geometry, material );
+                    mesh.position.x = -2.4;
+                    mesh.position.y = 5;
+                    mesh.position.z = -5;
+                    mesh.rotation.x = -3.14159265/4;
+                    mesh.name = "Level";
+                    view.scene.add( mesh );
+                } );
+            }
+
+
+            // Suppression de l'affichage du score adverse en cas de fin de niveau
+            if(game.newLevel === 1 && (game.stage.level === 2 || game.stage.level === 3)){
+                var scoreOffender = view.scene.getObjectByName( "scoreOffender" );
+                view.scene.remove(scoreOffender);
+                game.newLevel = 0;
+            }
+
+
+            // Le joueur marque un point
             if(player === "Player" || (game.player.score == 0 && game.offender.score == 0)){
                 loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
-
                     var geometry = new THREE.TextGeometry( game.player.score.toString(), {
                         font: font,
                         size: 0.5,
@@ -76,6 +218,8 @@ var game = {
                 } );
             }
 
+
+            // L'adversaire marque un point
             if(player === "Offender" || (game.player.score == 0 && game.offender.score == 0)) {
                 loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
 
@@ -102,6 +246,8 @@ var game = {
                 } );
             }
 
+
+            // Repositionnement de la balle
             game.ball.z = -5;
             game.ball.x = 0;
             game.ball.vel.x = 0;
@@ -114,6 +260,7 @@ var game = {
                 game.ball.vel.z = Math.abs(ball_vel_z) > 0 ? ball_vel_z : game.ball.speed;
 
             }, 1000);
+
 
 
 
