@@ -6,7 +6,7 @@ var game = {
         fov : 75,
         player : {
 
-            speed : 0.25,
+            speed : 0.20,
             w : 3,
             h : .5,
             d : .5,
@@ -459,28 +459,50 @@ render();
 
 game.reset();
 
+function acceleration(){
+    game.player.speed += 0.02;
+}
+
+
+let leftAcc;
+let rightAcc;
+
+
+function clearAcc(){
+    clearInterval(rightAcc);
+    clearInterval(leftAcc);
+}
 
 // Controllers
 document.onkeydown=function(e){
 
+
     if(e.keyCode == 37){
+        clearAcc();
         controller.left = true;
+        leftAcc = setInterval(acceleration, 50);
     }
 
     if(e.keyCode == 39)
     {
+        clearAcc();
         controller.right = true;
+        rightAcc = setInterval(acceleration, 50);
     }
 };
 
 document.onkeyup=function(e){
 
     if(e.keyCode == 37){
+        clearAcc()
+        game.player.speed = 0.20;
         controller.left = false;
     }
 
     if(e.keyCode == 39)
     {
+        clearAcc();
+        game.player.speed = 0.20;
         controller.right = false;
     }
 };
