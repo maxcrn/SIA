@@ -275,7 +275,6 @@ var game = {
 
     //  Three JS Setup
     view = {
-
         scene    : new THREE.Scene(),
         camera   : new THREE.PerspectiveCamera( game.fov, window.innerWidth / window.innerHeight, .1, 1000 ),
         renderer : new THREE.WebGLRenderer({alpha:true})
@@ -286,6 +285,30 @@ view.renderer.setSize( window.innerWidth - 10, window.innerHeight);
 
 // Put the canvas element into document
 document.body.appendChild( view.renderer.domElement);
+
+const bgScene = new THREE.Scene();
+let bgMesh;
+{
+    const loader = new THREE.TextureLoader();
+    const texture = loader.load(
+        'src/medias/images/stadium_01_2k.jpg',
+    );
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearFilter;
+
+    const shader = THREE.ShaderLib.equirect;
+    const material = new THREE.ShaderMaterial({
+        fragmentShader: shader.fragmentShader,
+        vertexShader: shader.vertexShader,
+        uniforms: shader.uniforms,
+        depthWrite: false,
+        side: THREE.BackSide,
+    });
+    material.uniforms.tEquirect.value = texture;
+    const plane = new THREE.BoxBufferGeometry(50, 50, 50);
+    bgMesh = new THREE.Mesh(plane, material);
+    view.scene.add(bgMesh);
+}
 
 
 // Game elements
@@ -451,8 +474,18 @@ function render() {
     if(game.ball.x < -(game.stage.w/2))
         game.ball.vel.x *= -1;
 
+
     requestAnimationFrame(render);
+    const fov = 75;
+    const aspect = 2;  // the canvas default
+    const near = 0.1;
+    const far = 100;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 3;
+    ///////////////////////////////// TEST BACKGROUND ////////////////////////////////////
     view.renderer.render(view.scene, view.camera);
+    bgMesh.position.copy(camera.position);
+    //renderer.render(bgScene, camera);
 }
 
 render();
