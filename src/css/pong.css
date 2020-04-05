@@ -19,3 +19,8 @@ small{color:grey; text-transform:uppercase; position: absolute;}
     overflow: hidden;
     visibility: hidden;
 }
+#SIApp {
+    width: 100%;
+    height: 100%;
+    display: block;
+}

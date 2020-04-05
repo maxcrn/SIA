@@ -95,10 +95,11 @@ var game = {
                     geometry.center();
                     var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
                     mesh = new THREE.Mesh( geometry, material );
-                    mesh.position.x = -2.4;
+                    mesh.position.x = -6;
                     mesh.position.y = 5;
-                    mesh.position.z = -5;
-                    mesh.rotation.x = -3.14159265/4;
+                    mesh.position.z = -2;
+                    mesh.rotation.x = 0;
+                    mesh.rotation.y = 3.14/6
                     mesh.name = "Level";
                     view.scene.add( mesh );
                 } );
@@ -146,10 +147,11 @@ var game = {
                     geometry.center();
                     var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
                     mesh = new THREE.Mesh( geometry, material );
-                    mesh.position.x = -2.4;
+                    mesh.position.x = -6;
                     mesh.position.y = 5;
-                    mesh.position.z = -5;
-                    mesh.rotation.x = -3.14159265/4;
+                    mesh.position.z = -2;
+                    mesh.rotation.x = 0;
+                    mesh.rotation.y = 3.14/6
                     mesh.name = "Level";
                     view.scene.add( mesh );
                 } );
@@ -174,10 +176,11 @@ var game = {
                     geometry.center();
                     var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
                     mesh = new THREE.Mesh( geometry, material );
-                    mesh.position.x = -2.4;
+                    mesh.position.x = -6;
                     mesh.position.y = 5;
-                    mesh.position.z = -5;
-                    mesh.rotation.x = -3.14159265/4;
+                    mesh.position.z = -2;
+                    mesh.rotation.x = 0;
+                    mesh.rotation.y = 3.14/6
                     mesh.name = "Level";
                     view.scene.add( mesh );
                 } );
@@ -209,10 +212,10 @@ var game = {
                     geometry.center();
                     var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
                     mesh = new THREE.Mesh( geometry, material );
-                    mesh.position.x = 2.4;
+                    mesh.position.x = 2;
                     mesh.position.y = 5;
-                    mesh.position.z = 0;
-                    mesh.rotation.x = -3.14159265/4;
+                    mesh.position.z = 2.5;
+                    mesh.rotation.x = -3.14159265/8;
                     mesh.name = "scorePlayer";
                     view.scene.add( mesh );
                 } );
@@ -239,8 +242,8 @@ var game = {
                     mesh = new THREE.Mesh( geometry, material );
                     mesh.position.x = -2.4;
                     mesh.position.y = 5;
-                    mesh.position.z = -3;
-                    mesh.rotation.x = -3.14159265/4;
+                    mesh.position.z = -1;
+                    mesh.rotation.x = -3.14159265/8;
                     mesh.name = "scoreOffender";
                     view.scene.add( mesh );
                 } );
@@ -286,97 +289,99 @@ view.renderer.setSize( window.innerWidth - 10, window.innerHeight);
 // Put the canvas element into document
 document.body.appendChild( view.renderer.domElement);
 
-const bgScene = new THREE.Scene();
-let bgMesh;
-{
-    const loader = new THREE.TextureLoader();
-    const texture = loader.load(
-        'src/medias/images/stadium_01_2k.jpg',
-    );
-    texture.magFilter = THREE.LinearFilter;
-    texture.minFilter = THREE.LinearFilter;
-
-    const shader = THREE.ShaderLib.equirect;
-    const material = new THREE.ShaderMaterial({
-        fragmentShader: shader.fragmentShader,
-        vertexShader: shader.vertexShader,
-        uniforms: shader.uniforms,
-        depthWrite: false,
-        side: THREE.BackSide,
-    });
-    material.uniforms.tEquirect.value = texture;
-    const plane = new THREE.BoxBufferGeometry(50, 50, 50);
-    bgMesh = new THREE.Mesh(plane, material);
-    view.scene.add(bgMesh);
+// Background
+class Background{
+    initBackground(){
+        const skyGeometry = new THREE.BoxGeometry(1500, 1500, 1500)
+        const skyMaterials = [
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_nx.jpg'), //Right
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_px.jpg'), //Left
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_py.jpg'), //Up
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_pz.jpg'), //Down
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_pz.jpg'), //Back
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_pz.jpg'), //Front
+                side: THREE.DoubleSide
+            })
+        ]
+        const skyMaterial = THREE.MeshFaceMaterial(skyMaterials)
+        this.mesh = new THREE.Mesh(skyGeometry, skyMaterial)
+        view.scene.add(this.mesh)
+    }
 }
 
 
-// Game elements
+// Responsive
+window.addEventListener( 'resize', onWindowResize, false );
 
+function onWindowResize() {
+    view.camera.aspect = window.innerWidth / window.innerHeight;
+    view.camera.updateProjectionMatrix();
+    view.renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+// Elements de jeu
+
+//  Raquettes
 var baton_geometry = new THREE.CubeGeometry(game.player.w,game.player.h,game.player.d);
-var cube_geometry = new THREE.CubeGeometry(game.ball.w,game.ball.h,game.ball.d);
 var playerBaton = new THREE.MeshLambertMaterial( { color: 0x14A6F4 } );
 var opponentBaton = new THREE.MeshLambertMaterial( { color: 0xF41414 } );
 
+//      Joueur
 game.player.baton = new THREE.Mesh( baton_geometry, playerBaton );
 game.player.baton.position.y += game.player.h/2;
+view.scene.add( game.player.baton );
 
+//      Adversaire
 game.offender.baton = new THREE.Mesh( baton_geometry, opponentBaton );
 game.offender.baton.position.y += game.offender.h/2;
 game.offender.baton.position.z -= 10;
+view.scene.add( game.offender.baton );
 
-//game.ball.cube = new THREE.Mesh( cube_geometry, ballGame );
+//  Balle
 game.ball.cube = THREEx.SportBalls.createFootball();
 game.ball.cube.position.y += game.ball.h/2;
-
 game.ball.z = -5;
-
-view.scene.add( game.player.baton );
-view.scene.add( game.offender.baton );
 view.scene.add( game.ball.cube );
 
+//  Terrain
 var floor_geometry = new THREE.PlaneGeometry( 15, 10 );
-//var brown_material = new THREE.MeshLambertMaterial( { color: 0x0001862 } );
 var img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/soccerField.jpg')});
 img.map.needsUpdate = true;
-
-// plane
 game.stage.mesh = new THREE.Mesh(floor_geometry, img);
 game.stage.mesh.overdraw = true;
-// game.stage.mesh = new THREE.Mesh( floor_geometry, brown_material );
 game.stage.mesh.material.side = THREE.DoubleSide;
 game.stage.mesh.rotation.x = 1.57079633;
 game.stage.mesh.position.z = -5;
 view.scene.add( game.stage.mesh );
 
-// Camera positioning
+// Positionnement de la caméra
 
-// Player view
-view.camera.position.z = 2;
-view.camera.position.y = 10;
+//  Tout le terrain
+view.camera.position.z = 6;
+view.camera.position.y = 8;
 view.camera.position.x = 0;
-view.camera.rotation.x = -3.14159265/4;
-//view.camera.rotation.x = -0.3926990815;
+view.camera.rotation.x = -3.14159265/8;
 
-// Offender view
-//view.camera.position.z = -13;
-//view.camera.position.y = 2.5;
-//view.camera.rotation.x = 0.3926990815;
-//view.camera.rotation.y = 3.14159265;
+//  Raquette du joueur
+////////// TODO ///////////
 
-// Center birds eye view
-//view.camera.position.z = -5;
-//view.camera.position.y = 10;
-//view.camera.rotation.x = -1.57079633;
-
-// Side on
-//view.camera.position.z = -9;
-//view.camera.position.y = 1;
-//view.camera.position.x = -5;
-//view.camera.rotation.z = -1.57079633;
-//view.camera.rotation.y = -1.57079633;
-
-// Lighting in birds eye view
+// Eclairage
 var directionalLight = new THREE.DirectionalLight( 0xcccccc, 1 );
 
 directionalLight.position.set( 0, 1, 0 );
@@ -397,9 +402,10 @@ var directionalLight4 = new THREE.DirectionalLight( 0xcccccc, 1 );
 directionalLight4.position.set( -10, 1, 0 );
 view.scene.add( directionalLight4 );
 
-// Ambient light to soften birds eye directional
-var light = new THREE.AmbientLight( 0x101010 );
-view.scene.add( light );
+// Initialisation du Background
+var background = new Background();
+background.initBackground();
+
 
 function render() {
 
@@ -459,7 +465,6 @@ function render() {
             game.ball.vel.x = (game.ball.x - game.player.x)/10;
         }else{
 
-            //if(game.ball.z + (game.ball.d/2) > 0)
             var scoreOffender = view.scene.getObjectByName( "scoreOffender" );
             view.scene.remove(scoreOffender);
             game.offender.score ++;
@@ -476,16 +481,7 @@ function render() {
 
 
     requestAnimationFrame(render);
-    const fov = 75;
-    const aspect = 2;  // the canvas default
-    const near = 0.1;
-    const far = 100;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 3;
-    ///////////////////////////////// TEST BACKGROUND ////////////////////////////////////
     view.renderer.render(view.scene, view.camera);
-    bgMesh.position.copy(camera.position);
-    //renderer.render(bgScene, camera);
 }
 
 render();
