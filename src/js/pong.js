@@ -23,7 +23,8 @@ var game = {
             d : .5,
             x : 0,
             baton : null,
-            score : 0
+            score : 0,
+            mesh : null
         },
         ball : {
 
@@ -370,13 +371,34 @@ game.stage.mesh.rotation.x = 1.57079633;
 game.stage.mesh.position.z = -5;
 view.scene.add( game.stage.mesh );
 
+var advGeometry = new THREE.PlaneGeometry( 20, 15 );
+var advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/zidane.jpg')});
+img.map.needsUpdate = true;
+game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+game.offender.mesh.overdraw = true;
+game.offender.mesh.material.side = THREE.DoubleSide;
+game.offender.mesh.rotation.x = -3.14159265/10;
+game.offender.mesh.position.z = -15;
+game.offender.mesh.position.y = 5;
+view.scene.add( game.offender.mesh );
+
 // Positionnement de la caméra
 
 //  Tout le terrain
-view.camera.position.z = 6;
-view.camera.position.y = 8;
-view.camera.position.x = 0;
-view.camera.rotation.x = -3.14159265/8;
+function cameraTerrain(){
+    view.camera.position.z = 6;
+    view.camera.position.y = 8;
+    view.camera.position.x = 0;
+    view.camera.rotation.x = -3.14159265/8;
+}
+cameraTerrain()
+
+//  Camera depuis la raquette du joueur
+function cameraPlayer(){
+    view.camera.position.x = game.player.baton.position.x;
+    view.camera.position.y = game.player.baton.position.y;
+    view.camera.position.z = game.player.baton.position.z;
+}
 
 //  Raquette du joueur
 ////////// TODO ///////////
@@ -517,6 +539,15 @@ document.onkeydown=function(e){
         clearAcc();
         controller.right = true;
         rightAcc = setInterval(acceleration, 50);
+    }
+
+    if(e.keyCode == 50){
+        cameraPlayerInt = setInterval(cameraPlayer, 20)
+    }
+
+    if(e.keyCode == 49){
+        clearInterval(cameraPlayerInt);
+        cameraTerrain();
     }
 };
 
