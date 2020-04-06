@@ -510,6 +510,34 @@ render();
 
 game.reset();
 
+/* Get the documentElement (<html>) to display the page in fullscreen */
+var elem = document.documentElement;
+
+/* View in fullscreen */
+function openFullscreen() {
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+    }
+}
+
+
+function makeScreenshot() {
+    html2canvas(document.body, {
+        onrendered: function(canvas)
+        {
+            canvas.toBlob(function(blob) {
+                saveAs(blob, "wholePage.png");
+            });
+        }
+    });
+}
+
 function acceleration(){
     game.player.speed += 0.02;
 }
@@ -548,6 +576,14 @@ document.onkeydown=function(e){
     if(e.keyCode == 49){
         clearInterval(cameraPlayerInt);
         cameraTerrain();
+    }
+
+    if(e.keyCode == 70){
+        openFullscreen();
+    }
+
+    if(e.keyCode == 80){
+        makeScreenshot();
     }
 };
 
