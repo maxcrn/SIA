@@ -2,6 +2,9 @@
  * declare THREEx namespace
  * @type {[type]}
  */
+
+/** Source : https://github.com/jeromeetienne/threex.sportballs */
+
 var THREEx	= THREEx	|| {};
 
 /**
