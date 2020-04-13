@@ -12,7 +12,9 @@ var game = {
             d : .5,
             x : 0,
             baton : null,
-            score : 0
+            score : 0,
+            shieldUp : true,
+            shield : null
         },
         offender : {
 
@@ -24,7 +26,9 @@ var game = {
             x : 0,
             baton : null,
             score : 0,
-            mesh : null
+            mesh : null,
+            shieldUp : true,
+            shield : null
         },
         ball : {
 
@@ -407,6 +411,20 @@ game.offender.mesh.position.z = -15;
 game.offender.mesh.position.y = 5;
 view.scene.add( game.offender.mesh );
 
+//  Boucliers
+var shieldGeometryOff = new THREE.PlaneGeometry( 15, 2, 4);
+var shieldMaterial = new THREE.MeshPhongMaterial({color:0xFFFFFF, opacity: 0.5, transparent: true});
+game.offender.shield = new THREE.Mesh(shieldGeometryOff, shieldMaterial);
+game.offender.shield.material.side = THREE.DoubleSide;
+game.offender.shield.position.z = -10.3;
+view.scene.add(game.offender.shield);
+
+var shieldGeometryPla = new THREE.PlaneGeometry( 15, 1, 4);
+game.player.shield = new THREE.Mesh(shieldGeometryPla, shieldMaterial);
+game.player.shield.material.side = THREE.DoubleSide;
+game.player.shield.position.z = 0.3;
+view.scene.add(game.player.shield);
+
 // Positionnement de la caméra
 
 //  Tout le terrain
@@ -488,18 +506,22 @@ function render() {
     if(	game.ball.z - (game.ball.d/2) <= game.stage.z - (game.stage.h/2) + (game.offender.d/2)){
 
         if( game.ball.x + (game.ball.d/2) > game.offender.x - (game.offender.w/2) &&
-
             game.ball.x - (game.ball.d/2) < game.offender.x + (game.offender.w/2)){
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.offender.x)/10;
 
-        }else{
-
-            //if(game.ball.z - (game.ball.d/2) < game.stage.z - (game.stage.h/2))
-
+        }
+        else if(game.offender.shieldUp){
+            game.ball.vel.z *= -1;
+            game.offender.shieldUp = false;
+            view.scene.remove(game.offender.shield);
+        }
+        else{
             var scorePlayer = view.scene.getObjectByName( "scorePlayer" );
             view.scene.remove(scorePlayer);
             game.player.score ++;
+            view.scene.add(game.offender.shield);
+            game.offender.shieldUp = true;
             game.reset("Player");
         }
     }
@@ -510,11 +532,18 @@ function render() {
             game.ball.x - (game.ball.d/2) < game.player.x + (game.player.w/2)){
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.player.x)/10;
-        }else{
-
+        }
+        else if(game.player.shieldUp){
+            game.ball.vel.z *= -1;
+            game.player.shieldUp = false;
+            view.scene.remove(game.player.shield);
+        }
+        else{
             var scoreOffender = view.scene.getObjectByName( "scoreOffender" );
             view.scene.remove(scoreOffender);
             game.offender.score ++;
+            view.scene.add(game.player.shield);
+            game.player.shieldUp = true;
             game.reset("Offender");
         }
 
