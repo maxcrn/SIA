@@ -94,6 +94,7 @@ var game = {
                 view.scene.add( game.offender.mesh );
                 // Changement de difficulté
                 game.offender.speed = 0.085;
+                game.ball.speed = .155;
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
@@ -158,6 +159,7 @@ var game = {
                 view.scene.add( game.offender.mesh );
                 // Changement de difficulté
                 game.offender.speed = 0.11;
+                game.ball.speed = .185
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
@@ -289,7 +291,7 @@ var game = {
 
             setTimeout(function(){
 
-                game.ball.vel.z = Math.abs(ball_vel_z) > 0 ? ball_vel_z : game.ball.speed;
+                game.ball.vel.z = ball_vel_z > 0 ? game.ball.speed : -game.ball.speed;
 
             }, 1000);
 
@@ -507,21 +509,27 @@ function render() {
 
         if( game.ball.x + (game.ball.d/2) > game.offender.x - (game.offender.w/2) &&
             game.ball.x - (game.ball.d/2) < game.offender.x + (game.offender.w/2)){
+            game.ball.vel.z -= .005; // Accélération de la balle
+            // Rebonds de la balle
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.offender.x)/10;
-
         }
-        else if(game.offender.shieldUp){
-            game.ball.vel.z *= -1;
+        else if(game.offender.shieldUp){  // S'il y a un bouclier
+            game.ball.vel.z -= .005; // Accélération de la balle
+            game.ball.vel.z *= -1; // Rebond de la balle
+            // Désactivation du bouclier
             game.offender.shieldUp = false;
             view.scene.remove(game.offender.shield);
         }
         else{
+            // Changement du score
             var scorePlayer = view.scene.getObjectByName( "scorePlayer" );
             view.scene.remove(scorePlayer);
             game.player.score ++;
+            // Réactivation du bouclier
             view.scene.add(game.offender.shield);
             game.offender.shieldUp = true;
+            // Reset du jeu
             game.reset("Player");
         }
     }
@@ -530,20 +538,27 @@ function render() {
 
         if( game.ball.x + (game.ball.d/2) > game.player.x - (game.player.w/2) &&
             game.ball.x - (game.ball.d/2) < game.player.x + (game.player.w/2)){
+            game.ball.vel.z += .005; // Accélération de la balle
+            // Rebonds de la balle
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.player.x)/10;
         }
-        else if(game.player.shieldUp){
-            game.ball.vel.z *= -1;
+        else if(game.player.shieldUp){ // S'il y a un bouclier
+            game.ball.vel.z += .005; // Accélération de la balle
+            game.ball.vel.z *= -1; // Rebond de la balle
+            // Désactivation du bouclier
             game.player.shieldUp = false;
             view.scene.remove(game.player.shield);
         }
         else{
+            // Changement du score
             var scoreOffender = view.scene.getObjectByName( "scoreOffender" );
             view.scene.remove(scoreOffender);
             game.offender.score ++;
+            // Réactivation du bouclier
             view.scene.add(game.player.shield);
             game.player.shieldUp = true;
+            // Reset du jeu
             game.reset("Offender");
         }
 
@@ -592,7 +607,7 @@ function makeScreenshot() {
     });
 }
 
-function acceleration(){
+function accelerationJoueur(){
     game.player.speed += 0.02;
 }
 
@@ -613,14 +628,14 @@ document.onkeydown=function(e){
     if(e.keyCode == 37){
         clearAcc();
         controller.left = true;
-        leftAcc = setInterval(acceleration, 50);
+        leftAcc = setInterval(accelerationJoueur, 50);
     }
 
     if(e.keyCode == 39)
     {
         clearAcc();
         controller.right = true;
-        rightAcc = setInterval(acceleration, 50);
+        rightAcc = setInterval(accelerationJoueur, 50);
     }
 
     if(e.keyCode == 50){
