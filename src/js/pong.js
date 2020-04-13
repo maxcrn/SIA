@@ -4,6 +4,9 @@ var game = {
         w : 1200,
         h : 800,
         fov : 75,
+        sound : null,
+        soundActive : false,
+        impact : null,
         player : {
 
             speed : 0.20,
@@ -95,6 +98,8 @@ var game = {
                 // Changement de difficulté
                 game.offender.speed = 0.085;
                 game.ball.speed = .155;
+                // Changement du son correspondant au niveau 2
+                game.impact = soundTennis;
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
@@ -158,8 +163,10 @@ var game = {
                 game.offender.mesh.position.y = 5;
                 view.scene.add( game.offender.mesh );
                 // Changement de difficulté
-                game.offender.speed = 0.11;
+                game.offender.speed = 0.10;
                 game.ball.speed = .185
+                // Changement du son correspondant au niveau 3
+                game.impact = soundBasket;
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
@@ -214,6 +221,8 @@ var game = {
                     mesh.rotation.y = 3.14/6
                     mesh.name = "Level";
                     view.scene.add( mesh );
+                    // Ajout du son correspondant au niveau 1
+                    game.impact = soundFootball;
                 } );
             }
 
@@ -414,6 +423,7 @@ game.offender.mesh.position.y = 5;
 view.scene.add( game.offender.mesh );
 
 //  Boucliers
+//      Adversaire
 var shieldGeometryOff = new THREE.PlaneGeometry( 15, 2, 4);
 var shieldMaterial = new THREE.MeshPhongMaterial({color:0xFFFFFF, opacity: 0.5, transparent: true});
 game.offender.shield = new THREE.Mesh(shieldGeometryOff, shieldMaterial);
@@ -421,11 +431,54 @@ game.offender.shield.material.side = THREE.DoubleSide;
 game.offender.shield.position.z = -10.3;
 view.scene.add(game.offender.shield);
 
+//      Joueur
 var shieldGeometryPla = new THREE.PlaneGeometry( 15, 1, 4);
 game.player.shield = new THREE.Mesh(shieldGeometryPla, shieldMaterial);
 game.player.shield.material.side = THREE.DoubleSide;
 game.player.shield.position.z = 0.3;
 view.scene.add(game.player.shield);
+
+//  Sons de la balle
+var listener = new THREE.AudioListener();
+view.camera.add( listener );
+
+//      Football
+var soundFootball = new THREE.Audio(listener);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/football.ogg', function( buffer ) {
+    soundFootball.setBuffer( buffer );
+    soundFootball.setLoop( false );
+    soundFootball.setVolume( 1 );
+});
+
+//      Tennis
+var soundTennis = new THREE.Audio(listener);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/tennis.ogg', function( buffer ) {
+    soundTennis.setBuffer( buffer );
+    soundTennis.setLoop( false );
+    soundTennis.setVolume( 1 );
+});
+
+//      Basket
+var soundBasket = new THREE.Audio(listener);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/basket.ogg', function( buffer ) {
+    soundBasket.setBuffer( buffer );
+    soundBasket.setLoop( false );
+    soundBasket.setVolume( 1 );
+});
+
+//  Son d'ambiance
+var sound = new THREE.Audio(listener);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/musiqueFond.mp3', function( buffer ) {
+    sound.setBuffer( buffer );
+    sound.setLoop( true );
+    sound.setVolume( 0.25 );
+    game.sound = sound;
+});
+
 
 // Positionnement de la caméra
 
@@ -436,7 +489,7 @@ function cameraTerrain(){
     view.camera.position.x = 0;
     view.camera.rotation.x = -3.14159265/8;
 }
-cameraTerrain()
+cameraTerrain();
 
 //  Camera depuis la raquette du joueur
 function cameraPlayer(){
@@ -445,8 +498,6 @@ function cameraPlayer(){
     view.camera.position.z = game.player.baton.position.z;
 }
 
-//  Raquette du joueur
-////////// TODO ///////////
 
 // Eclairage
 var directionalLight = new THREE.DirectionalLight( 0xcccccc, 1 );
@@ -513,6 +564,8 @@ function render() {
             // Rebonds de la balle
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.offender.x)/10;
+            // Son du rebond de la balle
+            game.impact.play();
         }
         else if(game.offender.shieldUp){  // S'il y a un bouclier
             game.ball.vel.z -= .005; // Accélération de la balle
@@ -520,6 +573,8 @@ function render() {
             // Désactivation du bouclier
             game.offender.shieldUp = false;
             view.scene.remove(game.offender.shield);
+            // Son du rebond de la balle
+            game.impact.play();
         }
         else{
             // Changement du score
@@ -542,6 +597,8 @@ function render() {
             // Rebonds de la balle
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.player.x)/10;
+            // Son du rebond de la balle
+            game.impact.play();
         }
         else if(game.player.shieldUp){ // S'il y a un bouclier
             game.ball.vel.z += .005; // Accélération de la balle
@@ -549,6 +606,8 @@ function render() {
             // Désactivation du bouclier
             game.player.shieldUp = false;
             view.scene.remove(game.player.shield);
+            // Son du rebond de la balle
+            game.impact.play();
         }
         else{
             // Changement du score
@@ -616,6 +675,7 @@ let leftAcc;
 let rightAcc;
 
 
+
 function clearAcc(){
     clearInterval(rightAcc);
     clearInterval(leftAcc);
@@ -638,22 +698,39 @@ document.onkeydown=function(e){
         rightAcc = setInterval(accelerationJoueur, 50);
     }
 
+    // Caméra de la barre : é
     if(e.keyCode == 50){
         cameraPlayerInt = setInterval(cameraPlayer, 20)
     }
 
+    // Caméra du terrain global : &
     if(e.keyCode == 49){
         clearInterval(cameraPlayerInt);
         cameraTerrain();
     }
 
+    // Plein écran : f
     if(e.keyCode == 70){
         openFullscreen();
     }
 
+    // Screenshot : p
     if(e.keyCode == 80){
         makeScreenshot();
     }
+
+    // Activation de la musique de fond : s
+    if(e.keyCode == 83 && !game.soundActive){
+        game.sound.play();
+        game.soundActive = true;
+    }
+
+    // Désactivation du son : x
+    if(e.keyCode == 88 && game.soundActive){
+        game.sound.pause();
+        game.soundActive = false;
+    }
+
 };
 
 document.onkeyup=function(e){
