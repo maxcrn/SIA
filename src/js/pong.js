@@ -17,7 +17,8 @@ var game = {
             baton : null,
             score : 0,
             shieldUp : true,
-            shield : null
+            shield : null,
+            invincible : false
         },
         offender : {
 
@@ -31,7 +32,8 @@ var game = {
             score : 0,
             mesh : null,
             shieldUp : true,
-            shield : null
+            shield : null,
+            ralenti : false
         },
         ball : {
 
@@ -96,7 +98,9 @@ var game = {
                 game.offender.mesh.position.y = 5;
                 view.scene.add( game.offender.mesh );
                 // Changement de difficulté
-                game.offender.speed = 0.085;
+                if(!game.offender.ralenti){
+                    game.offender.speed = 0.085;
+                }
                 game.ball.speed = .155;
                 // Changement du son correspondant au niveau 2
                 game.impact = soundTennis;
@@ -163,7 +167,9 @@ var game = {
                 game.offender.mesh.position.y = 5;
                 view.scene.add( game.offender.mesh );
                 // Changement de difficulté
-                game.offender.speed = 0.10;
+                if(!game.offender.ralenti){
+                    game.offender.speed = 0.10;
+                }
                 game.ball.speed = .185
                 // Changement du son correspondant au niveau 3
                 game.impact = soundBasket;
@@ -440,7 +446,9 @@ view.scene.add(game.player.shield);
 
 //  Sons de la balle
 var listener = new THREE.AudioListener();
+var listenerFond = new THREE.AudioListener();
 view.camera.add( listener );
+view.camera.add( listenerFond );
 
 //      Football
 var soundFootball = new THREE.Audio(listener);
@@ -470,7 +478,7 @@ audioLoader.load( 'src/medias/sounds/basket.ogg', function( buffer ) {
 });
 
 //  Son d'ambiance
-var sound = new THREE.Audio(listener);
+var sound = new THREE.Audio(listenerFond);
 var audioLoader = new THREE.AudioLoader();
 audioLoader.load( 'src/medias/sounds/musiqueFond.mp3', function( buffer ) {
     sound.setBuffer( buffer );
@@ -600,13 +608,18 @@ function render() {
             // Son du rebond de la balle
             game.impact.play();
         }
-        else if(game.player.shieldUp){ // S'il y a un bouclier
+        else if(game.player.shieldUp && !game.player.invincible){ // S'il y a un bouclier
             game.ball.vel.z += .005; // Accélération de la balle
             game.ball.vel.z *= -1; // Rebond de la balle
             // Désactivation du bouclier
             game.player.shieldUp = false;
             view.scene.remove(game.player.shield);
             // Son du rebond de la balle
+            game.impact.play();
+        }
+        else if(game.player.invincible){
+            game.ball.vel.z += .005; // Accélération de la balle
+            game.ball.vel.z *= -1; // Rebond de la balle
             game.impact.play();
         }
         else{
@@ -719,16 +732,54 @@ document.onkeydown=function(e){
         makeScreenshot();
     }
 
-    // Activation de la musique de fond : s
-    if(e.keyCode == 83 && !game.soundActive){
-        game.sound.play();
-        game.soundActive = true;
+    // Activation ou désactivation de la musique de fond : s
+    if(e.keyCode == 83){
+        if(!game.soundActive){
+            game.sound.play();
+            game.soundActive = true;
+        }
+        else{
+            game.sound.stop();
+            game.soundActive = false;
+        }
     }
 
-    // Désactivation du son : x
-    if(e.keyCode == 88 && game.soundActive){
-        game.sound.pause();
-        game.soundActive = false;
+    // Activation du mode invincible : i
+    if(e.keyCode == 73){
+        if(!game.player.invincible){
+            game.player.invincible = true;
+        }
+        else{
+            game.player.invincible = false;
+        }
+    }
+
+    // Activation du mode ralenti de l'adversaire : r
+    if(e.keyCode == 82){
+        if(!game.offender.ralenti){
+            game.offender.ralenti = true;
+            game.offender.speed = 0.025
+        }
+        else{
+            game.offender.ralenti = false;
+            if(game.stage.level == 1){
+                game.offender.speed = 0.06;
+            }
+            else if(game.stage.level == 2){
+                game.offender.speed = 0.085;
+            }
+            else if(game.stage.level == 3){
+                game.offender.speed = 0.10;
+            }
+        }
+    }
+
+    // Désactivation du bouclier adverse : k
+    if(e.keyCode == 75){
+        if(game.offender.shieldUp){
+            game.offender.shieldUp = false;
+            view.scene.remove(game.offender.shield);
+        }
     }
 
 };
