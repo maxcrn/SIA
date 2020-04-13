@@ -76,6 +76,18 @@ var game = {
                 game.stage.mesh.position.z = -5;
                 view.scene.add( game.stage.mesh );
                 view.scene.add( game.stage.mesh );
+                // Changement d'adversaire
+                view.scene.remove(game.offender.mesh);
+                advGeometry = new THREE.PlaneGeometry( 20, 15 );
+                advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/federer.jpg')});
+                img.map.needsUpdate = true;
+                game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+                game.offender.mesh.overdraw = true;
+                game.offender.mesh.material.side = THREE.DoubleSide;
+                game.offender.mesh.rotation.x = -3.14159265/10;
+                game.offender.mesh.position.z = -15;
+                game.offender.mesh.position.y = 5;
+                view.scene.add( game.offender.mesh );
                 // Changement de difficulté
                 game.offender.speed = 0.085;
                 // Affichage du niveau
@@ -128,6 +140,18 @@ var game = {
                 game.stage.mesh.position.z = -5;
                 view.scene.add( game.stage.mesh );
                 view.scene.add( game.stage.mesh );
+                // Changement d'adversaire
+                view.scene.remove(game.offender.mesh);
+                advGeometry = new THREE.PlaneGeometry( 20, 15 );
+                advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/lebron.jpg')});
+                img.map.needsUpdate = true;
+                game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+                game.offender.mesh.overdraw = true;
+                game.offender.mesh.material.side = THREE.DoubleSide;
+                game.offender.mesh.rotation.x = -3.14159265/10;
+                game.offender.mesh.position.z = -15;
+                game.offender.mesh.position.y = 5;
+                view.scene.add( game.offender.mesh );
                 // Changement de difficulté
                 game.offender.speed = 0.11;
                 // Affichage du niveau
@@ -371,6 +395,7 @@ game.stage.mesh.rotation.x = 1.57079633;
 game.stage.mesh.position.z = -5;
 view.scene.add( game.stage.mesh );
 
+//  Adversaire
 var advGeometry = new THREE.PlaneGeometry( 20, 15 );
 var advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/zidane.jpg')});
 img.map.needsUpdate = true;
