@@ -7,6 +7,7 @@ var game = {
         sound : null,
         soundActive : false,
         impact : null,
+        lastHit : null,
         player : {
 
             speed : 0.20,
@@ -56,6 +57,15 @@ var game = {
             z : -5,
             level : 1,
             mesh : null
+        },
+        joker :{
+            shield:{
+                mesh : null
+            },
+            type : null,
+            x : 0,
+            y : 0,
+            z : 0
         },
         reset : function(player){
 
@@ -430,19 +440,67 @@ view.scene.add( game.offender.mesh );
 
 //  Boucliers
 //      Adversaire
-var shieldGeometryOff = new THREE.PlaneGeometry( 15, 2, 4);
-var shieldMaterial = new THREE.MeshPhongMaterial({color:0xFFFFFF, opacity: 0.5, transparent: true});
-game.offender.shield = new THREE.Mesh(shieldGeometryOff, shieldMaterial);
-game.offender.shield.material.side = THREE.DoubleSide;
-game.offender.shield.position.z = -10.3;
-view.scene.add(game.offender.shield);
+
+function activateShieldOff(){
+    var shieldGeometryOff = new THREE.PlaneGeometry( 15, 2, 4);
+    var shieldMaterial = new THREE.MeshPhongMaterial({color:0xFFFFFF, opacity: 0.5, transparent: true});
+    game.offender.shield = new THREE.Mesh(shieldGeometryOff, shieldMaterial);
+    game.offender.shield.material.side = THREE.DoubleSide;
+    game.offender.shield.position.z = -10.3;
+    view.scene.add(game.offender.shield);
+}
+activateShieldOff();
 
 //      Joueur
-var shieldGeometryPla = new THREE.PlaneGeometry( 15, 1, 4);
-game.player.shield = new THREE.Mesh(shieldGeometryPla, shieldMaterial);
-game.player.shield.material.side = THREE.DoubleSide;
-game.player.shield.position.z = 0.3;
-view.scene.add(game.player.shield);
+function activateShieldPla(){
+    var shieldMaterial = new THREE.MeshPhongMaterial({color:0xFFFFFF, opacity: 0.5, transparent: true});
+    var shieldGeometryPla = new THREE.PlaneGeometry( 15, 1, 4);
+    game.player.shield = new THREE.Mesh(shieldGeometryPla, shieldMaterial);
+    game.player.shield.material.side = THREE.DoubleSide;
+    game.player.shield.position.z = 0.3;
+    view.scene.add(game.player.shield);
+}
+activateShieldPla();
+
+
+//  Jokers
+//      Textures
+//          Bouclier supplémentaire
+
+function ajoutJokShield(x, y, z){
+    const jokShieldGeometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+    textureJokShield =
+        [
+            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
+            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
+            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
+            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
+            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
+            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")})
+        ];
+    var jokShieldMaterial = new THREE.MeshFaceMaterial (textureJokShield);
+    game.joker.shield.mesh = new THREE.Mesh(jokShieldGeometry, jokShieldMaterial);
+    game.joker.shield.mesh.position.x = x;
+    game.joker.shield.mesh.position.y = y;
+    game.joker.shield.mesh.position.z = z;
+    view.scene.add(game.joker.shield.mesh);
+}
+
+function apparitionJoker(){
+    // Random d'un nombre pour l'apparition ou non du joker
+    randomJok = Math.floor(Math.random() * 101);
+
+    // Random de 3 nombres pour la position du joker
+    x = Math.floor(Math.random() * 12) - 6;
+    z = Math.floor(Math.random() * -9);
+
+    // Appartion joker
+    if(randomJok < 70  && !jokShieldUp){
+        ajoutJokShield(x, 0.5, z);
+        jokShieldUp = true;
+    }
+}
+
 
 //  Sons de la balle
 var listener = new THREE.AudioListener();
@@ -533,7 +591,14 @@ var background = new Background();
 background.initBackground();
 
 
+jokShieldUp = false;
+
+
 function render() {
+
+    if(jokShieldUp){
+        game.joker.shield.mesh.rotation.y += 0.01
+    }
 
     if(controller.left && game.player.x - (game.player.w/2) > -(game.stage.w/2)){
         game.player.x -= game.player.speed;
@@ -563,8 +628,28 @@ function render() {
     game.player.baton.position.x = game.player.x;
     game.offender.baton.position.x = game.offender.x;
 
-    // Collision
+    // Collision avec les jokers
+    //  Bouclier
+    if(jokShieldUp){
+        if((game.ball.x - 0.75 < game.joker.shield.mesh.position.x && game.joker.shield.mesh.position.x < game.ball.x + 0.75)
+        && (game.ball.z - 0.75 < game.joker.shield.mesh.position.z && game.joker.shield.mesh.position.z < game.ball.z + 0.75)){
+            view.scene.remove(game.joker.shield.mesh);
+            jokShieldUp = false;
+            if(game.lastHit === "Player" && !game.player.shieldUp){
+                game.player.shieldUp = true;
+                activateShieldPla()
+            }
+            if(game.lastHit === "Offender" && !game.offender.shieldUp){
+                game.offender.shieldUp = true;
+                activateShieldOff()
+            }
+        }
+    }
+
+    // Collision avec les raquettes
     if(	game.ball.z - (game.ball.d/2) <= game.stage.z - (game.stage.h/2) + (game.offender.d/2)){
+
+        apparitionJoker();
 
         if( game.ball.x + (game.ball.d/2) > game.offender.x - (game.offender.w/2) &&
             game.ball.x - (game.ball.d/2) < game.offender.x + (game.offender.w/2)){
@@ -574,6 +659,9 @@ function render() {
             game.ball.vel.x = (game.ball.x - game.offender.x)/10;
             // Son du rebond de la balle
             game.impact.play();
+            // Le dernier joueur a avoir tapé la balle est le joueur : Offender
+            game.lastHit = "Offender";
+
         }
         else if(game.offender.shieldUp){  // S'il y a un bouclier
             game.ball.vel.z -= .005; // Accélération de la balle
@@ -583,6 +671,8 @@ function render() {
             view.scene.remove(game.offender.shield);
             // Son du rebond de la balle
             game.impact.play();
+            // Le dernier joueur a avoir tapé la balle est le joueur : Player
+            game.lastHit = "Offender";
         }
         else{
             // Changement du score
@@ -599,6 +689,8 @@ function render() {
 
     if(game.ball.z + (game.ball.d/2) >= 0 - (game.player.d/2)){
 
+        apparitionJoker();
+
         if( game.ball.x + (game.ball.d/2) > game.player.x - (game.player.w/2) &&
             game.ball.x - (game.ball.d/2) < game.player.x + (game.player.w/2)){
             game.ball.vel.z += .005; // Accélération de la balle
@@ -607,6 +699,8 @@ function render() {
             game.ball.vel.x = (game.ball.x - game.player.x)/10;
             // Son du rebond de la balle
             game.impact.play();
+            // Le dernier joueur a avoir tapé la balle est le joueur : Player
+            game.lastHit = "Player";
         }
         else if(game.player.shieldUp && !game.player.invincible){ // S'il y a un bouclier
             game.ball.vel.z += .005; // Accélération de la balle
@@ -616,11 +710,13 @@ function render() {
             view.scene.remove(game.player.shield);
             // Son du rebond de la balle
             game.impact.play();
+            game.lastHit = "Player";
         }
         else if(game.player.invincible){
             game.ball.vel.z += .005; // Accélération de la balle
             game.ball.vel.z *= -1; // Rebond de la balle
             game.impact.play();
+            game.lastHit = "Player";
         }
         else{
             // Changement du score
@@ -635,6 +731,8 @@ function render() {
         }
 
     }
+
+
 
     if(game.ball.x > (game.stage.w/2))
         game.ball.vel.x *= -1;
