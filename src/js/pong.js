@@ -19,7 +19,10 @@ var game = {
             score : 0,
             shieldUp : true,
             shield : null,
-            invincible : false
+            invincible : false,
+            barreAgr : false,
+            barreRed : false,
+            barreCD : null
         },
         offender : {
 
@@ -34,7 +37,10 @@ var game = {
             mesh : null,
             shieldUp : true,
             shield : null,
-            ralenti : false
+            ralenti : false,
+            barreAgr : false,
+            barreRed : false,
+            barreCD : null
         },
         ball : {
 
@@ -60,12 +66,20 @@ var game = {
         },
         joker :{
             shield:{
-                mesh : null
+                meshFront : null,
+                meshBack : null,
+                up : false
             },
-            type : null,
-            x : 0,
-            y : 0,
-            z : 0
+            barre:{
+                meshFront : null,
+                meshBack : null,
+                up : false
+            },
+            barreMin:{
+                meshFront : null,
+                meshBack : null,
+                up : false
+            }
         },
         reset : function(player){
 
@@ -394,20 +408,48 @@ function onWindowResize() {
 // Elements de jeu
 
 //  Raquettes
-var baton_geometry = new THREE.CubeGeometry(game.player.w,game.player.h,game.player.d);
+
 var playerBaton = new THREE.MeshLambertMaterial( { color: 0x14A6F4 } );
 var opponentBaton = new THREE.MeshLambertMaterial( { color: 0xF41414 } );
+var batonGeometry = null;
 
 //      Joueur
-game.player.baton = new THREE.Mesh( baton_geometry, playerBaton );
-game.player.baton.position.y += game.player.h/2;
-view.scene.add( game.player.baton );
+function genererBarrePla(w, h, d){
+    if(game.player.baton != null){
+        view.scene.remove(game.player.baton);
+    }
+    game.player.w = w;
+    batonGeometry = new THREE.CubeGeometry(w, h, d);
+    game.player.baton = new THREE.Mesh( batonGeometry, playerBaton );
+    game.player.baton.position.y += game.player.h/2;
+    view.scene.add( game.player.baton );
+    if(w === 3){
+        game.player.barreAgr = false;
+        game.player.barreRed = false;
+        game.player.barreCD = null;
+    }
+}
+genererBarrePla(game.player.w, game.player.h, game.player.d);
+
 
 //      Adversaire
-game.offender.baton = new THREE.Mesh( baton_geometry, opponentBaton );
-game.offender.baton.position.y += game.offender.h/2;
-game.offender.baton.position.z -= 10;
-view.scene.add( game.offender.baton );
+function genererBarreOff(w, h, d){
+    if(game.offender.baton != null){
+        view.scene.remove(game.offender.baton);
+    }
+    batonGeometry = new THREE.CubeGeometry(w, h, d);
+    game.offender.w = w;
+    game.offender.baton = new THREE.Mesh( batonGeometry, opponentBaton );
+    game.offender.baton.position.y += game.offender.h/2;
+    game.offender.baton.position.z -= 10;
+    view.scene.add( game.offender.baton );
+    if(w === 3){
+        game.offender.barreAgr = false;
+        game.offender.barreRed = false;
+        game.offender.barreCD = null;
+    }
+}
+genererBarreOff(game.offender.w, game.offender.h, game.offender.d);
 
 //  Balle
 game.ball.cube = THREEx.SportBalls.createFootball();
@@ -468,22 +510,59 @@ activateShieldPla();
 //          Bouclier supplémentaire
 
 function ajoutJokShield(x, y, z){
-    const jokShieldGeometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
-    textureJokShield =
-        [
-            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
-            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
-            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
-            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
-            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")}),
-            new THREE.MeshBasicMaterial ({map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")})
-        ];
+    const jokShieldGeometry = new THREE.PlaneGeometry( 1, 1 );
+    textureJokShield = new THREE.MeshBasicMaterial ({transparent : true,
+        map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")});
     var jokShieldMaterial = new THREE.MeshFaceMaterial (textureJokShield);
-    game.joker.shield.mesh = new THREE.Mesh(jokShieldGeometry, jokShieldMaterial);
-    game.joker.shield.mesh.position.x = x;
-    game.joker.shield.mesh.position.y = y;
-    game.joker.shield.mesh.position.z = z;
-    view.scene.add(game.joker.shield.mesh);
+    game.joker.shield.meshFront = new THREE.Mesh(jokShieldGeometry, jokShieldMaterial);
+    game.joker.shield.meshFront.position.x = x;
+    game.joker.shield.meshFront.position.y = y;
+    game.joker.shield.meshFront.position.z = z;
+    game.joker.shield.meshBack = new THREE.Mesh(jokShieldGeometry, jokShieldMaterial);
+    game.joker.shield.meshBack.position.x = x;
+    game.joker.shield.meshBack.position.y = y;
+    game.joker.shield.meshBack.position.z = z;
+    game.joker.shield.meshBack.rotation.y = Math.PI;
+    view.scene.add(game.joker.shield.meshBack);
+    view.scene.add(game.joker.shield.meshFront);
+}
+
+//          Agrandissement de la barre
+function ajoutJokBarre(x, y, z){
+    const jokBarreGeometry = new THREE.PlaneGeometry( 1, 1 );
+    textureJokBarre = new THREE.MeshBasicMaterial ({transparent : true,
+        map : new THREE.TextureLoader().load("src/medias/images/barreJok.png")});
+    var jokBarreMaterial = new THREE.MeshFaceMaterial (textureJokBarre);
+    game.joker.barre.meshFront = new THREE.Mesh(jokBarreGeometry, jokBarreMaterial);
+    game.joker.barre.meshFront.position.x = x;
+    game.joker.barre.meshFront.position.y = y;
+    game.joker.barre.meshFront.position.z = z;
+    game.joker.barre.meshBack = new THREE.Mesh(jokBarreGeometry, jokBarreMaterial);
+    game.joker.barre.meshBack.position.x = x;
+    game.joker.barre.meshBack.position.y = y;
+    game.joker.barre.meshBack.position.z = z;
+    game.joker.barre.meshBack.rotation.y = Math.PI;
+    view.scene.add(game.joker.barre.meshBack);
+    view.scene.add(game.joker.barre.meshFront);
+}
+
+//          Diminution de la barre
+function ajoutJokBarreMin(x, y, z){
+    const jokBarreMinGeometry = new THREE.PlaneGeometry( 1, 1 );
+    textureJokBarreMin = new THREE.MeshBasicMaterial ({transparent : true,
+        map : new THREE.TextureLoader().load("src/medias/images/barreMin.png")});
+    var jokBarreMinMaterial = new THREE.MeshFaceMaterial (textureJokBarreMin);
+    game.joker.barreMin.meshFront = new THREE.Mesh(jokBarreMinGeometry, jokBarreMinMaterial);
+    game.joker.barreMin.meshFront.position.x = x;
+    game.joker.barreMin.meshFront.position.y = y;
+    game.joker.barreMin.meshFront.position.z = z;
+    game.joker.barreMin.meshBack = new THREE.Mesh(jokBarreMinGeometry, jokBarreMinMaterial);
+    game.joker.barreMin.meshBack.position.x = x;
+    game.joker.barreMin.meshBack.position.y = y;
+    game.joker.barreMin.meshBack.position.z = z;
+    game.joker.barreMin.meshBack.rotation.y = Math.PI;
+    view.scene.add(game.joker.barreMin.meshBack);
+    view.scene.add(game.joker.barreMin.meshFront);
 }
 
 function apparitionJoker(){
@@ -494,10 +573,22 @@ function apparitionJoker(){
     x = Math.floor(Math.random() * 12) - 6;
     z = Math.floor(Math.random() * -9);
 
-    // Appartion joker
-    if(randomJok < 70  && !jokShieldUp){
+    // Appartion joker bouclier
+    if(randomJok < 30  && !game.joker.shield.up){
         ajoutJokShield(x, 0.5, z);
-        jokShieldUp = true;
+        game.joker.shield.up = true;
+    }
+
+    // Apparition joker barre
+    if(randomJok < 60 && randomJok > 30 && !game.joker.barre.up){
+        ajoutJokBarre(x, 0.5, z);
+        game.joker.barre.up = true;
+    }
+
+    // Apparition réduction de barre
+    if(randomJok > 60 && !game.joker.barreMin.up){
+        ajoutJokBarreMin(x, 0.5, z);
+        game.joker.barreMin.up = true;
     }
 }
 
@@ -590,14 +681,63 @@ view.scene.add( directionalLight4 );
 var background = new Background();
 background.initBackground();
 
+// Joker
+//  Barre agrandie
+function activateBarreAgr(player){
+    if(player === "Player"){
+        genererBarrePla(4, game.player.h, game.player.d);
+        if(game.player.barreCD != null){
+            window.clearTimeout(game.player.barreCD);
+        }
+        game.player.barreCD = setTimeout(function(){ genererBarrePla(3, game.player.h, game.player.d); }, 5000)
+    }
+    else{
+        genererBarreOff(4, game.offender.h, game.offender.d);
+        if(game.offender.barreCD != null){
+            window.clearTimeout(game.offender.barreCD);
+        }
+        game.offender.barreCD = setTimeout(function(){ genererBarreOff(3, game.offender.h, game.offender.d); }, 5000)
+    }
+}
 
-jokShieldUp = false;
+//  Barre réduite
+function activateBarreReduite(player){
+    if(player === "Player"){
+        genererBarrePla(2, game.player.h, game.player.d);
+        if(game.player.barreCD != undefined){
+            window.clearTimeout(game.player.barreCD);
+        }
+        game.player.barreCD = setTimeout(function(){ genererBarrePla(3, game.player.h, game.player.d); }, 5000)
+    }
+    else{
+        genererBarreOff(2, game.offender.h, game.offender.d);
+        if(game.offender.barreCD != undefined){
+            window.clearTimeout(game.offender.barreCD);
+        }
+        game.offender.barreCD = setTimeout(function(){ genererBarreOff(3, game.offender.h, game.offender.d); }, 5000)
+    }
+}
 
 
 function render() {
 
-    if(jokShieldUp){
-        game.joker.shield.mesh.rotation.y += 0.01
+    // Rotation des jokers
+    //  Bouclier
+    if(game.joker.shield.up){
+        game.joker.shield.meshFront.rotation.y += 0.01
+        game.joker.shield.meshBack.rotation.y += 0.01
+    }
+
+    //  Barre
+    if(game.joker.barre.up){
+        game.joker.barre.meshFront.rotation.y += 0.01
+        game.joker.barre.meshBack.rotation.y += 0.01
+    }
+
+    //  Réduction barre
+    if(game.joker.barreMin.up){
+        game.joker.barreMin.meshFront.rotation.y += 0.01
+        game.joker.barreMin.meshBack.rotation.y += 0.01
     }
 
     if(controller.left && game.player.x - (game.player.w/2) > -(game.stage.w/2)){
@@ -630,11 +770,12 @@ function render() {
 
     // Collision avec les jokers
     //  Bouclier
-    if(jokShieldUp){
-        if((game.ball.x - 0.75 < game.joker.shield.mesh.position.x && game.joker.shield.mesh.position.x < game.ball.x + 0.75)
-        && (game.ball.z - 0.75 < game.joker.shield.mesh.position.z && game.joker.shield.mesh.position.z < game.ball.z + 0.75)){
-            view.scene.remove(game.joker.shield.mesh);
-            jokShieldUp = false;
+    if(game.joker.shield.up){
+        if((game.ball.x - 0.75 < game.joker.shield.meshFront.position.x && game.joker.shield.meshFront.position.x < game.ball.x + 0.75)
+        && (game.ball.z - 0.75 < game.joker.shield.meshFront.position.z && game.joker.shield.meshFront.position.z < game.ball.z + 0.75)){
+            view.scene.remove(game.joker.shield.meshFront);
+            view.scene.remove(game.joker.shield.meshBack);
+            game.joker.shield.up = false;
             if(game.lastHit === "Player" && !game.player.shieldUp){
                 game.player.shieldUp = true;
                 activateShieldPla()
@@ -642,6 +783,42 @@ function render() {
             if(game.lastHit === "Offender" && !game.offender.shieldUp){
                 game.offender.shieldUp = true;
                 activateShieldOff()
+            }
+        }
+    }
+
+    //  Barre
+    if(game.joker.barre.up){
+        if((game.ball.x - 0.75 < game.joker.barre.meshFront.position.x && game.joker.barre.meshFront.position.x < game.ball.x + 0.75)
+            && (game.ball.z - 0.75 < game.joker.barre.meshFront.position.z && game.joker.barre.meshFront.position.z < game.ball.z + 0.75)) {
+            view.scene.remove(game.joker.barre.meshFront);
+            view.scene.remove(game.joker.barre.meshBack);
+            game.joker.barre.up = false;
+            if(game.lastHit === "Player" && !game.player.barreAgr){
+                game.player.barreAgr = true;
+                activateBarreAgr(game.lastHit);
+            }
+            if(game.lastHit === "Offender" && !game.offender.barreAgr){
+                game.offender.barreAgr = true;
+                activateBarreAgr(game.lastHit);
+            }
+        }
+    }
+
+    //  Réduction Barre
+    if(game.joker.barreMin.up){
+        if((game.ball.x - 0.75 < game.joker.barreMin.meshFront.position.x && game.joker.barreMin.meshFront.position.x < game.ball.x + 0.75)
+            && (game.ball.z - 0.75 < game.joker.barreMin.meshFront.position.z && game.joker.barreMin.meshFront.position.z < game.ball.z + 0.75)) {
+            view.scene.remove(game.joker.barreMin.meshFront);
+            view.scene.remove(game.joker.barreMin.meshBack);
+            game.joker.barreMin.up = false;
+            if(game.lastHit === "Player" && !game.player.barreRed){
+                game.player.barreRed = true;
+                activateBarreReduite(game.lastHit);
+            }
+            if(game.lastHit === "Offender" && !game.offender.barreRed){
+                game.offender.barreRed = true;
+                activateBarreReduite(game.lastHit);
             }
         }
     }
