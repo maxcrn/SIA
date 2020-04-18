@@ -68,17 +68,26 @@ var game = {
             shield:{
                 meshFront : null,
                 meshBack : null,
-                up : false
+                up : false,
+                sound : null
             },
             barre:{
                 meshFront : null,
                 meshBack : null,
-                up : false
+                up : false,
+                sound : null
             },
             barreMin:{
                 meshFront : null,
                 meshBack : null,
-                up : false
+                up : false,
+                sound : null
+            },
+            destruction:{
+                meshFront : null,
+                meshBack : null,
+                up : false,
+                sound : null
             }
         },
         reset : function(player){
@@ -565,6 +574,27 @@ function ajoutJokBarreMin(x, y, z){
     view.scene.add(game.joker.barreMin.meshFront);
 }
 
+//          Destruction du bouclier adverse
+function ajoutJokDestruction(x, y, z){
+    const jokDestructionGeometry = new THREE.PlaneGeometry( 1, 1 );
+    textureJokDestruction = new THREE.MeshBasicMaterial ({transparent : true,
+        map : new THREE.TextureLoader().load("src/medias/images/destruction.png")});
+    var jokDestructionMaterial = new THREE.MeshFaceMaterial (textureJokDestruction);
+    game.joker.destruction.meshFront = new THREE.Mesh(jokDestructionGeometry, jokDestructionMaterial);
+    game.joker.destruction.meshFront.position.x = x;
+    game.joker.destruction.meshFront.position.y = y;
+    game.joker.destruction.meshFront.position.z = z;
+    game.joker.destruction.meshBack = new THREE.Mesh(jokDestructionGeometry, jokDestructionMaterial);
+    game.joker.destruction.meshBack.position.x = x;
+    game.joker.destruction.meshBack.position.y = y;
+    game.joker.destruction.meshBack.position.z = z;
+    game.joker.destruction.meshBack.rotation.y = Math.PI;
+    view.scene.add(game.joker.destruction.meshBack);
+    view.scene.add(game.joker.destruction.meshFront);
+}
+
+// Apparition des jokers
+
 function apparitionJoker(){
     // Random d'un nombre pour l'apparition ou non du joker
     randomJok = Math.floor(Math.random() * 101);
@@ -573,22 +603,28 @@ function apparitionJoker(){
     x = Math.floor(Math.random() * 12) - 6;
     z = Math.floor(Math.random() * -9);
 
-    // Appartion joker bouclier
-    if(randomJok < 30  && !game.joker.shield.up){
+    // Apparition joker bouclier
+    if(randomJok < 10  && !game.joker.shield.up){
         ajoutJokShield(x, 0.5, z);
         game.joker.shield.up = true;
     }
 
-    // Apparition joker barre
-    if(randomJok < 60 && randomJok > 30 && !game.joker.barre.up){
+    // Apparition joker augmentation de la taille de la barre
+    if(randomJok < 20 && randomJok > 10 && !game.joker.barre.up){
         ajoutJokBarre(x, 0.5, z);
         game.joker.barre.up = true;
     }
 
     // Apparition réduction de barre
-    if(randomJok > 60 && !game.joker.barreMin.up){
+    if(randomJok < 30 && randomJok > 20 && !game.joker.barreMin.up){
         ajoutJokBarreMin(x, 0.5, z);
         game.joker.barreMin.up = true;
+    }
+
+    // Apparition destruction
+    if(randomJok < 40 && randomJok > 30 && !game.joker.destruction.up){
+        ajoutJokDestruction(x, 0.5, z);
+        game.joker.destruction.up = true;
     }
 }
 
@@ -596,6 +632,10 @@ function apparitionJoker(){
 //  Sons de la balle
 var listener = new THREE.AudioListener();
 var listenerFond = new THREE.AudioListener();
+var listenerJokB = new THREE.AudioListener();
+var listenerJokA = new THREE.AudioListener();
+var listenerJokD = new THREE.AudioListener();
+var listenerJokDB = new THREE.AudioListener();
 view.camera.add( listener );
 view.camera.add( listenerFond );
 
@@ -634,6 +674,51 @@ audioLoader.load( 'src/medias/sounds/musiqueFond.mp3', function( buffer ) {
     sound.setLoop( true );
     sound.setVolume( 0.25 );
     game.sound = sound;
+});
+
+//  Sons de jokers
+//      Bouclier
+
+var soundJokB = new THREE.Audio(listenerJokB);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/shield.wav', function( buffer ) {
+    soundJokB.setBuffer( buffer );
+    soundJokB.setLoop( false );
+    soundJokB.setVolume( 0.75 );
+    game.joker.shield.sound = soundJokB;
+});
+
+//      Allongement de la barre
+
+var soundJokA = new THREE.Audio(listenerJokA);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/augment.wav', function( buffer ) {
+    soundJokA.setBuffer( buffer );
+    soundJokA.setLoop( false );
+    soundJokA.setVolume( 0.75 );
+    game.joker.barre.sound = soundJokA;
+});
+
+//      Diminution de la barre
+
+var soundJokD = new THREE.Audio(listenerJokD);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/reduc.wav', function( buffer ) {
+    soundJokD.setBuffer( buffer );
+    soundJokD.setLoop( false );
+    soundJokD.setVolume( 0.75 );
+    game.joker.barreMin.sound = soundJokD;
+});
+
+//      Destruction du bouclier
+
+var soundJokDB = new THREE.Audio(listenerJokDB);
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'src/medias/sounds/destru.mp3', function( buffer ) {
+    soundJokDB.setBuffer( buffer );
+    soundJokDB.setLoop( false );
+    soundJokDB.setVolume( 0.75 );
+    game.joker.destruction.sound = soundJokDB;
 });
 
 
@@ -690,6 +775,7 @@ function activateBarreAgr(player){
             window.clearTimeout(game.player.barreCD);
         }
         game.player.barreCD = setTimeout(function(){ genererBarrePla(3, game.player.h, game.player.d); }, 5000)
+        setTimeout(function(){game.player.barreAgr = false;}, 5000);
     }
     else{
         genererBarreOff(4, game.offender.h, game.offender.d);
@@ -697,24 +783,27 @@ function activateBarreAgr(player){
             window.clearTimeout(game.offender.barreCD);
         }
         game.offender.barreCD = setTimeout(function(){ genererBarreOff(3, game.offender.h, game.offender.d); }, 5000)
+        setTimeout(function(){game.offender.barreAgr = false;}, 5000);
     }
 }
 
 //  Barre réduite
 function activateBarreReduite(player){
     if(player === "Player"){
+        genererBarreOff(2, game.offender.h, game.offender.d);
+        if(game.offender.barreCD != null){
+            window.clearTimeout(game.offender.barreCD);
+        }
+        game.offender.barreCD = setTimeout(function(){ genererBarreOff(3, game.offender.h, game.offender.d);}, 5000)
+        setTimeout(function(){game.offender.barreRed = false;}, 5000);
+    }
+    else{
         genererBarrePla(2, game.player.h, game.player.d);
-        if(game.player.barreCD != undefined){
+        if(game.player.barreCD != null){
             window.clearTimeout(game.player.barreCD);
         }
         game.player.barreCD = setTimeout(function(){ genererBarrePla(3, game.player.h, game.player.d); }, 5000)
-    }
-    else{
-        genererBarreOff(2, game.offender.h, game.offender.d);
-        if(game.offender.barreCD != undefined){
-            window.clearTimeout(game.offender.barreCD);
-        }
-        game.offender.barreCD = setTimeout(function(){ genererBarreOff(3, game.offender.h, game.offender.d); }, 5000)
+        setTimeout(function(){game.player.barreRed = false;}, 5000);
     }
 }
 
@@ -739,6 +828,13 @@ function render() {
         game.joker.barreMin.meshFront.rotation.y += 0.01
         game.joker.barreMin.meshBack.rotation.y += 0.01
     }
+
+    //  Destruction bouclier
+    if(game.joker.destruction.up){
+        game.joker.destruction.meshFront.rotation.y += 0.01
+        game.joker.destruction.meshBack.rotation.y += 0.01
+    }
+
 
     if(controller.left && game.player.x - (game.player.w/2) > -(game.stage.w/2)){
         game.player.x -= game.player.speed;
@@ -778,16 +874,18 @@ function render() {
             game.joker.shield.up = false;
             if(game.lastHit === "Player" && !game.player.shieldUp){
                 game.player.shieldUp = true;
+                game.joker.shield.sound.play();
                 activateShieldPla()
             }
             if(game.lastHit === "Offender" && !game.offender.shieldUp){
                 game.offender.shieldUp = true;
+                game.joker.shield.sound.play();
                 activateShieldOff()
             }
         }
     }
 
-    //  Barre
+    //  Allongement barre
     if(game.joker.barre.up){
         if((game.ball.x - 0.75 < game.joker.barre.meshFront.position.x && game.joker.barre.meshFront.position.x < game.ball.x + 0.75)
             && (game.ball.z - 0.75 < game.joker.barre.meshFront.position.z && game.joker.barre.meshFront.position.z < game.ball.z + 0.75)) {
@@ -796,29 +894,53 @@ function render() {
             game.joker.barre.up = false;
             if(game.lastHit === "Player" && !game.player.barreAgr){
                 game.player.barreAgr = true;
+                game.joker.barre.sound.play();
                 activateBarreAgr(game.lastHit);
             }
             if(game.lastHit === "Offender" && !game.offender.barreAgr){
                 game.offender.barreAgr = true;
+                game.joker.barre.sound.play();
                 activateBarreAgr(game.lastHit);
             }
         }
     }
 
-    //  Réduction Barre
+    //  Réduction Barre adverse
     if(game.joker.barreMin.up){
         if((game.ball.x - 0.75 < game.joker.barreMin.meshFront.position.x && game.joker.barreMin.meshFront.position.x < game.ball.x + 0.75)
             && (game.ball.z - 0.75 < game.joker.barreMin.meshFront.position.z && game.joker.barreMin.meshFront.position.z < game.ball.z + 0.75)) {
             view.scene.remove(game.joker.barreMin.meshFront);
             view.scene.remove(game.joker.barreMin.meshBack);
             game.joker.barreMin.up = false;
-            if(game.lastHit === "Player" && !game.player.barreRed){
-                game.player.barreRed = true;
+            if(game.lastHit === "Player" && !game.offender.barreRed){
+                game.offender.barreRed = true;
+                game.joker.barreMin.sound.play();
                 activateBarreReduite(game.lastHit);
             }
-            if(game.lastHit === "Offender" && !game.offender.barreRed){
-                game.offender.barreRed = true;
+            if(game.lastHit === "Offender" && !game.player.barreRed){
+                game.player.barreRed = true;
+                game.joker.barreMin.sound.play();
                 activateBarreReduite(game.lastHit);
+            }
+        }
+    }
+
+    // Destruction bouclier adversaire
+    if(game.joker.destruction.up){
+        if((game.ball.x - 0.75 < game.joker.destruction.meshFront.position.x && game.joker.destruction.meshFront.position.x < game.ball.x + 0.75)
+            && (game.ball.z - 0.75 < game.joker.destruction.meshFront.position.z && game.joker.destruction.meshFront.position.z < game.ball.z + 0.75)) {
+            view.scene.remove(game.joker.destruction.meshFront);
+            view.scene.remove(game.joker.destruction.meshBack);
+            game.joker.destruction.up = false;
+            if(game.lastHit === "Player" && game.offender.shieldUp){
+                game.offender.shieldUp = false;
+                game.joker.destruction.sound.play();
+                view.scene.remove(game.offender.shield);
+            }
+            if(game.lastHit === "Offender" && game.player.shieldUp){
+                game.player.shieldUp = false;
+                game.joker.destruction.sound.play();
+                view.scene.remove(game.player.shield);
             }
         }
     }
