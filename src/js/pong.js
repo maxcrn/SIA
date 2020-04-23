@@ -8,6 +8,11 @@ var game = {
         soundActive : false,
         impact : null,
         lastHit : null,
+        timeoutStart : null,
+        lastWinner : null,
+        textContainer : document.querySelector('#labels'),
+        textToDisplay : null,
+        beginning : true,
         player : {
 
             speed : 0.20,
@@ -95,6 +100,13 @@ var game = {
             var ball_vel_z = game.ball.vel.z;
 
             var loader = new THREE.FontLoader();
+
+            if(game.offender.score === 3){
+                const elem = document.createElement('div');
+                elem.textContent = 'Vous avez perdu ! Si vous souhaitez rejouer, appuyer sur Entrée !';
+                labelContainerElem.appendChild(elem);
+                setTimeout(function(){labelContainerElem.remove(elem);}, 2000);
+            }
 
             // Passage au niveau 2
             if(game.player.score === 3 && game.stage.level === 1){
@@ -238,6 +250,12 @@ var game = {
             // Affichage du Niveau 1
             if(game.stage.level === 1  && game.newLevel === 1){
                 game.newLevel = 0;
+                game.textToDisplay = document.createElement('div');
+                game.textToDisplay.textContent = 'Bienvenue dans le jeu Pong de Maxime CARIN ! Pour jouer, appuyez sur Entrée !';
+                game.textContainer.appendChild(game.textToDisplay);
+                //setTimeout(function(){labelContainerElem.remove(elem);}, 2000);
+                continueGame = false;
+                //labelContainerElem.remove(elem);
                 loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
                     var geometry = new THREE.TextGeometry("Niveau 1", {
                         font: font,
@@ -337,15 +355,15 @@ var game = {
             game.offender.x = 0;
             game.player.x = 0;
 
-            setTimeout(function(){
+            game.lastWinner = ball_vel_z;
 
-                game.ball.vel.z = ball_vel_z > 0 ? game.ball.speed : -game.ball.speed;
+            if(!game.beginning){
+                game.timeoutStart = setTimeout(function(){
 
-            }, 1000);
+                    game.ball.vel.z = ball_vel_z > 0 ? game.ball.speed : -game.ball.speed;
 
-
-
-
+                }, 2000);
+            }
         }
 
     },
@@ -1176,6 +1194,15 @@ document.onkeydown=function(e){
         if(game.offender.shieldUp){
             game.offender.shieldUp = false;
             view.scene.remove(game.offender.shield);
+        }
+    }
+
+    if (e.keyCode == 13) {
+        window.clearTimeout(game.timeoutStart);
+        game.ball.vel.z = game.lastWinner > 0 ? game.ball.speed : -game.ball.speed;
+        game.textContainer.remove(game.textToDisplay);
+        if(game.beginning){
+            game.beginning = false;
         }
     }
 
