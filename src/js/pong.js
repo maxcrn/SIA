@@ -12,7 +12,12 @@ var game = {
         lastWinner : null,
         textContainer : document.querySelector('#labels'),
         textToDisplay : null,
-        beginning : true,
+        goalContainer : document.querySelector('#goals'),
+        helpContainer : document.querySelector('#help'),
+        helpText : document.createElement('div'),
+        stop : true,
+        restartNew : false,
+        helpDisplayed : false,
         player : {
 
             speed : 0.20,
@@ -27,7 +32,8 @@ var game = {
             invincible : false,
             barreAgr : false,
             barreRed : false,
-            barreCD : null
+            barreCD : null,
+            goalText : document.createElement('div')
         },
         offender : {
 
@@ -45,7 +51,8 @@ var game = {
             ralenti : false,
             barreAgr : false,
             barreRed : false,
-            barreCD : null
+            barreCD : null,
+            goalText : document.createElement('div')
         },
         ball : {
 
@@ -97,15 +104,96 @@ var game = {
         },
         reset : function(player){
 
+            game.player.goalText.textContent = "BUUUT ! Vous avez marqué !"
+            game.offender.goalText.textContent = "BUUUT ! Votre adversaire a marqué !"
+
             var ball_vel_z = game.ball.vel.z;
 
             var loader = new THREE.FontLoader();
 
             if(game.offender.score === 3){
-                const elem = document.createElement('div');
-                elem.textContent = 'Vous avez perdu ! Si vous souhaitez rejouer, appuyer sur Entrée !';
-                labelContainerElem.appendChild(elem);
-                setTimeout(function(){labelContainerElem.remove(elem);}, 2000);
+                game.goalContainer.appendChild(game.offender.goalText);
+                setTimeout(function(){game.goalContainer.removeChild(game.offender.goalText);}, 1000);
+                game.textToDisplay = document.createElement('div');
+                game.textToDisplay.textContent = 'Vous avez perdu ! Si vous souhaitez rejouer, appuyez sur Entrée !';
+                game.textContainer.appendChild(game.textToDisplay);
+                game.stop = true;
+                game.restartNew = true;
+            }
+
+            // Redémarrage du jeu
+            if(game.restartNew){
+                game.offender.score = 0;
+                game.player.score = 0;
+                game.stage.level = 1;
+                // Changement de la balle
+                view.scene.remove(game.ball.cube);
+                game.ball.cube = THREEx.SportBalls.createFootball();
+                view.scene.add(game.ball.cube);
+                // Changement du terrain
+                view.scene.remove(game.stage.mesh);
+                img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/soccerField.jpg')});
+                img.map.needsUpdate = true;
+                game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+                game.stage.mesh.overdraw = true;
+                game.stage.mesh.material.side = THREE.DoubleSide;
+                game.stage.mesh.rotation.x = 1.57079633;
+                game.stage.mesh.position.z = -5;
+                view.scene.add( game.stage.mesh );
+                // Changement d'adversaire
+                view.scene.remove(game.offender.mesh);
+                advGeometry = new THREE.PlaneGeometry( 20, 15 );
+                advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/zidane.jpg')});
+                img.map.needsUpdate = true;
+                game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+                game.offender.mesh.overdraw = true;
+                game.offender.mesh.material.side = THREE.DoubleSide;
+                game.offender.mesh.rotation.x = -3.14159265/10;
+                game.offender.mesh.position.z = -15;
+                game.offender.mesh.position.y = 5;
+                view.scene.add( game.offender.mesh );
+                // Changement de difficulté
+                if(!game.offender.ralenti){
+                    game.offender.speed = 0.06;
+                }
+                game.ball.speed = .125;
+                // Effacement du score
+                var scorePlayer = view.scene.getObjectByName( "scorePlayer" );
+                view.scene.remove(scorePlayer);
+                // Remise en position du bouclier de l'adversaire
+                if(!game.offender.shieldUp){
+                    game.offender.shieldUp = true;
+                    activateShieldOff();
+                }
+                // Changement du son correspondant au niveau 1
+                game.impact = soundFootball;
+                // Affichage du niveau
+                var level = view.scene.getObjectByName( "Level" );
+                view.scene.remove(level);
+                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                    var geometry = new THREE.TextGeometry("Niveau 1", {
+                        font: font,
+                        size: 0.5,
+                        height: 0.05,
+                        curveSegments: 0.5,
+                        bevelEnabled: false,
+                        bevelThickness: 0.5,
+                        bevelSize: 0.5,
+                        bevelOffset: 0,
+                        bevelSegments: 0.5
+                    } );
+                    geometry.center();
+                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    mesh = new THREE.Mesh( geometry, material );
+                    mesh.position.x = -6;
+                    mesh.position.y = 5;
+                    mesh.position.z = -2;
+                    mesh.rotation.x = 0;
+                    mesh.rotation.y = 3.14/6
+                    mesh.name = "Level";
+                    view.scene.add( mesh );
+                } );
+                game.restartNew = false;
             }
 
             // Passage au niveau 2
@@ -129,7 +217,6 @@ var game = {
                 game.stage.mesh.rotation.x = 1.57079633;
                 game.stage.mesh.position.z = -5;
                 view.scene.add( game.stage.mesh );
-                view.scene.add( game.stage.mesh );
                 // Changement d'adversaire
                 view.scene.remove(game.offender.mesh);
                 advGeometry = new THREE.PlaneGeometry( 20, 15 );
@@ -149,6 +236,13 @@ var game = {
                 game.ball.speed = .155;
                 // Changement du son correspondant au niveau 2
                 game.impact = soundTennis;
+                // Affichage des messages de but et de changement de niveau
+                game.goalContainer.appendChild(game.offender.goalText);
+                setTimeout(function(){game.goalContainer.removeChild(game.offender.goalText);}, 1000)
+                game.textToDisplay = document.createElement('div');
+                game.textToDisplay.textContent = 'Vous avez gagné ! Vous passez au niveau 2 ! Appuyez sur Entrée pour jouer !';
+                game.textContainer.appendChild(game.textToDisplay);
+                game.stop = true;
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
@@ -198,7 +292,6 @@ var game = {
                 game.stage.mesh.rotation.x = 1.57079633;
                 game.stage.mesh.position.z = -5;
                 view.scene.add( game.stage.mesh );
-                view.scene.add( game.stage.mesh );
                 // Changement d'adversaire
                 view.scene.remove(game.offender.mesh);
                 advGeometry = new THREE.PlaneGeometry( 20, 15 );
@@ -218,6 +311,13 @@ var game = {
                 game.ball.speed = .185
                 // Changement du son correspondant au niveau 3
                 game.impact = soundBasket;
+                // Affichage des messages de but et de changement de niveau
+                game.goalContainer.appendChild(game.offender.goalText);
+                setTimeout(function(){game.goalContainer.removeChild(game.offender.goalText);}, 1000)
+                game.textToDisplay = document.createElement('div');
+                game.textToDisplay.textContent = 'Vous avez gagné ! Vous passez au niveau 3 ! Appuyez sur Entrée pour jouer !';
+                game.textContainer.appendChild(game.textToDisplay);
+                game.stop = true;
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
@@ -253,9 +353,6 @@ var game = {
                 game.textToDisplay = document.createElement('div');
                 game.textToDisplay.textContent = 'Bienvenue dans le jeu Pong de Maxime CARIN ! Pour jouer, appuyez sur Entrée !';
                 game.textContainer.appendChild(game.textToDisplay);
-                //setTimeout(function(){labelContainerElem.remove(elem);}, 2000);
-                continueGame = false;
-                //labelContainerElem.remove(elem);
                 loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
                     var geometry = new THREE.TextGeometry("Niveau 1", {
                         font: font,
@@ -316,6 +413,10 @@ var game = {
                     mesh.name = "scorePlayer";
                     view.scene.add( mesh );
                 } );
+                if(game.player.score != 0){
+                    game.goalContainer.appendChild(game.player.goalText);
+                    setTimeout(function(){game.goalContainer.removeChild(game.player.goalText);}, 1000)
+                }
             }
 
 
@@ -344,6 +445,10 @@ var game = {
                     mesh.name = "scoreOffender";
                     view.scene.add( mesh );
                 } );
+                if(game.offender.score != 0){
+                    game.goalContainer.appendChild(game.offender.goalText);
+                    setTimeout(function(){game.goalContainer.removeChild(game.offender.goalText);}, 1000)
+                }
             }
 
 
@@ -357,7 +462,7 @@ var game = {
 
             game.lastWinner = ball_vel_z;
 
-            if(!game.beginning){
+            if(!game.stop){
                 game.timeoutStart = setTimeout(function(){
 
                     game.ball.vel.z = ball_vel_z > 0 ? game.ball.speed : -game.ball.speed;
@@ -431,6 +536,10 @@ function onWindowResize() {
     view.camera.updateProjectionMatrix();
     view.renderer.setSize( window.innerWidth, window.innerHeight );
 }
+
+// Aide
+
+game.helpText.textContent = ""
 
 // Elements de jeu
 
@@ -1197,13 +1306,36 @@ document.onkeydown=function(e){
         }
     }
 
-    if (e.keyCode == 13) {
+    if (e.keyCode == 13 && game.stop) {
         window.clearTimeout(game.timeoutStart);
         game.ball.vel.z = game.lastWinner > 0 ? game.ball.speed : -game.ball.speed;
-        game.textContainer.remove(game.textToDisplay);
-        if(game.beginning){
-            game.beginning = false;
+        game.textContainer.removeChild(game.textToDisplay);
+        if(game.stop){
+            game.stop = false;
         }
+    }
+
+    if(e.keyCode == 72){
+        if(game.helpDisplayed){
+            game.helpContainer.removeChild(game.helpText);
+            game.helpDisplayed = false;
+        }
+        else{
+            game.helpText.innerHTML = "AIDE : <br>" +
+                "<- Fleches -> : Déplacements des barres <br>" +
+                "& : Afficher la caméra terrain <br>" +
+                "é : Afficher la caméra de la barre du joueur <br>" +
+                "f : Passer en plein écran (échap pour quitter) <br>" +
+                "s : Activer ou désactiver la musique de fond <br>" +
+                "h : Afficher ou cacher l'aide <br>" +
+                "Codes : <br>" +
+                "r : Activer ou désactiver le mode ralenti de l'adversaire <br>" +
+                "k : Désactiver le bouclier adverse" ;
+            game.helpContainer.appendChild(game.helpText);
+            game.helpDisplayed = true;
+        }
+
+
     }
 
 };
