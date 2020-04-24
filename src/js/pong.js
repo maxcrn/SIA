@@ -121,6 +121,16 @@ var game = {
                 game.restartNew = true;
             }
 
+            if(game.player.score === 3 && game.stage.level === 3){
+                game.goalContainer.appendChild(game.player.goalText);
+                setTimeout(function(){game.goalContainer.removeChild(game.player.goalText);}, 1000);
+                game.textToDisplay = document.createElement('div');
+                game.textToDisplay.textContent = 'Vous avez fini le jeu ! Si vous souhaitez rejouer, appuyez sur Entrée !';
+                game.textContainer.appendChild(game.textToDisplay);
+                game.stop = true;
+                game.restartNew = true;
+            }
+
             // Redémarrage du jeu
             if(game.restartNew){
                 game.offender.score = 0;
@@ -308,7 +318,7 @@ var game = {
                 if(!game.offender.ralenti){
                     game.offender.speed = 0.10;
                 }
-                game.ball.speed = .185
+                game.ball.speed = .165
                 // Changement du son correspondant au niveau 3
                 game.impact = soundBasket;
                 // Affichage des messages de but et de changement de niveau
@@ -345,6 +355,8 @@ var game = {
                     view.scene.add( mesh );
                 } );
             }
+
+
 
 
             // Affichage du Niveau 1
@@ -1079,7 +1091,7 @@ function render() {
 
         if( game.ball.x + (game.ball.d/2) > game.offender.x - (game.offender.w/2) &&
             game.ball.x - (game.ball.d/2) < game.offender.x + (game.offender.w/2)){
-            game.ball.vel.z -= .005; // Accélération de la balle
+            game.ball.vel.z -= .0025; // Accélération de la balle
             // Rebonds de la balle
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.offender.x)/10;
@@ -1090,7 +1102,7 @@ function render() {
 
         }
         else if(game.offender.shieldUp){  // S'il y a un bouclier
-            game.ball.vel.z -= .005; // Accélération de la balle
+            game.ball.vel.z -= .0025; // Accélération de la balle
             game.ball.vel.z *= -1; // Rebond de la balle
             // Désactivation du bouclier
             game.offender.shieldUp = false;
@@ -1119,7 +1131,7 @@ function render() {
 
         if( game.ball.x + (game.ball.d/2) > game.player.x - (game.player.w/2) &&
             game.ball.x - (game.ball.d/2) < game.player.x + (game.player.w/2)){
-            game.ball.vel.z += .005; // Accélération de la balle
+            game.ball.vel.z += .0025; // Accélération de la balle
             // Rebonds de la balle
             game.ball.vel.z *= -1;
             game.ball.vel.x = (game.ball.x - game.player.x)/10;
@@ -1129,7 +1141,7 @@ function render() {
             game.lastHit = "Player";
         }
         else if(game.player.shieldUp && !game.player.invincible){ // S'il y a un bouclier
-            game.ball.vel.z += .005; // Accélération de la balle
+            game.ball.vel.z += .0025; // Accélération de la balle
             game.ball.vel.z *= -1; // Rebond de la balle
             // Désactivation du bouclier
             game.player.shieldUp = false;
@@ -1139,7 +1151,7 @@ function render() {
             game.lastHit = "Player";
         }
         else if(game.player.invincible){
-            game.ball.vel.z += .005; // Accélération de la balle
+            game.ball.vel.z += .0025; // Accélération de la balle
             game.ball.vel.z *= -1; // Rebond de la balle
             game.impact.play();
             game.lastHit = "Player";
