@@ -16,7 +16,7 @@ THREEx.SportBalls	= {};
 
 
 THREEx.SportBalls.createBasket	= function(){
-	var texture	= THREE.ImageUtils.loadTexture('src/medias/images/BasketballColor.jpg')
+	var texture	= new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/BasketballColor.jpg')
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 16);
 	var material	= new THREE.MeshPhongMaterial({
 		map	: texture,
@@ -28,7 +28,7 @@ THREEx.SportBalls.createBasket	= function(){
 }
 
 THREEx.SportBalls.createBeach	= function(){
-	var texture	= THREE.ImageUtils.loadTexture('src/medias/images/BeachBallColor.jpg')
+	var texture	= new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/BeachBallColor.jpg')
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 16);
 	var material	= new THREE.MeshPhongMaterial({
 		map	: texture,
@@ -40,8 +40,8 @@ THREEx.SportBalls.createBeach	= function(){
 }
 
 THREEx.SportBalls.createTennis	= function(){
-	var textureColor= THREE.ImageUtils.loadTexture('src/medias/images/NewTennisBallColor.jpg')
-	var textureBump	= THREE.ImageUtils.loadTexture('src/medias/images/TennisBallBump.jpg')
+	var textureColor= new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/NewTennisBallColor.jpg')
+	var textureBump	= new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/TennisBallBump.jpg')
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 16);
 	var material	= new THREE.MeshPhongMaterial({
 		map	: textureColor,
@@ -53,7 +53,7 @@ THREEx.SportBalls.createTennis	= function(){
 }
 
 THREEx.SportBalls.createFootball	= function(){
-	var texture	= THREE.ImageUtils.loadTexture('src/medias/images/Footballballfree.jpg59a2a1dc-64c8-4bc3-83ef-1257c9147fd1Large.jpg')
+	var texture	= new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/Footballballfree.jpg59a2a1dc-64c8-4bc3-83ef-1257c9147fd1Large.jpg')
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 16);
 	var material	= new THREE.MeshPhongMaterial({
 		map	: texture,

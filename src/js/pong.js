@@ -142,9 +142,9 @@ var game = {
                 view.scene.add(game.ball.cube);
                 // Changement du terrain
                 view.scene.remove(game.stage.mesh);
-                img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/soccerField.jpg')});
-                img.map.needsUpdate = true;
-                game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+                img = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/soccerField.jpg");
+                mtlField = new THREE.MeshBasicMaterial({ map : img});
+                game.stage.mesh = new THREE.Mesh(floor_geometry, mtlField);
                 game.stage.mesh.overdraw = true;
                 game.stage.mesh.material.side = THREE.DoubleSide;
                 game.stage.mesh.rotation.x = 1.57079633;
@@ -153,9 +153,9 @@ var game = {
                 // Changement d'adversaire
                 view.scene.remove(game.offender.mesh);
                 advGeometry = new THREE.PlaneGeometry( 20, 15 );
-                advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/zidane.jpg')});
-                img.map.needsUpdate = true;
-                game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+                advImg = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/zidane.jpg");
+                mtlAdv = new THREE.MeshBasicMaterial({ map : advImg});
+                game.offender.mesh = new THREE.Mesh(advGeometry, mtlAdv);
                 game.offender.mesh.overdraw = true;
                 game.offender.mesh.material.side = THREE.DoubleSide;
                 game.offender.mesh.rotation.x = -3.14159265/10;
@@ -182,7 +182,7 @@ var game = {
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
-                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
                     var geometry = new THREE.TextGeometry("Niveau 1", {
                         font: font,
                         size: 0.5,
@@ -221,9 +221,9 @@ var game = {
                 view.scene.add(game.ball.cube);
                 // Changement du terrain
                 view.scene.remove(game.stage.mesh);
-                img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/tennisField.png')});
-                img.map.needsUpdate = true;
-                game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+                img = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/tennisField.png");
+                mtlField = new THREE.MeshBasicMaterial({ map : img});
+                game.stage.mesh = new THREE.Mesh(floor_geometry, mtlField);
                 game.stage.mesh.overdraw = true;
                 game.stage.mesh.material.side = THREE.DoubleSide;
                 game.stage.mesh.rotation.x = 1.57079633;
@@ -232,9 +232,9 @@ var game = {
                 // Changement d'adversaire
                 view.scene.remove(game.offender.mesh);
                 advGeometry = new THREE.PlaneGeometry( 20, 15 );
-                advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/federer.jpg')});
-                img.map.needsUpdate = true;
-                game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+                advImg = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/federer.jpg");
+                mtlAdv = new THREE.MeshBasicMaterial({ map : advImg});
+                game.offender.mesh = new THREE.Mesh(advGeometry, mtlAdv);
                 game.offender.mesh.overdraw = true;
                 game.offender.mesh.material.side = THREE.DoubleSide;
                 game.offender.mesh.rotation.x = -3.14159265/10;
@@ -258,7 +258,7 @@ var game = {
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
-                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
                     var geometry = new THREE.TextGeometry("Niveau 2", {
                         font: font,
                         size: 0.5,
@@ -296,9 +296,9 @@ var game = {
                 view.scene.add(game.ball.cube);
                 // Changement du terrain
                 view.scene.remove(game.stage.mesh);
-                img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/basketballField.png')});
-                img.map.needsUpdate = true;
-                game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+                img = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/basketballField.png");
+                mtlField = new THREE.MeshBasicMaterial({ map : img});
+                game.stage.mesh = new THREE.Mesh(floor_geometry, mtlField);
                 game.stage.mesh.overdraw = true;
                 game.stage.mesh.material.side = THREE.DoubleSide;
                 game.stage.mesh.rotation.x = 1.57079633;
@@ -307,9 +307,9 @@ var game = {
                 // Changement d'adversaire
                 view.scene.remove(game.offender.mesh);
                 advGeometry = new THREE.PlaneGeometry( 20, 15 );
-                advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/lebron.jpg')});
-                img.map.needsUpdate = true;
-                game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+                advImg = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/lebron.jpg");
+                mtlAdv = new THREE.MeshBasicMaterial({ map : advImg});
+                game.offender.mesh = new THREE.Mesh(advGeometry, mtlAdv);
                 game.offender.mesh.overdraw = true;
                 game.offender.mesh.material.side = THREE.DoubleSide;
                 game.offender.mesh.rotation.x = -3.14159265/10;
@@ -333,7 +333,7 @@ var game = {
                 // Affichage du niveau
                 var level = view.scene.getObjectByName( "Level" );
                 view.scene.remove(level);
-                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
                     var geometry = new THREE.TextGeometry("Niveau 3", {
                         font: font,
                         size: 0.5,
@@ -367,7 +367,7 @@ var game = {
                 game.textToDisplay = document.createElement('div');
                 game.textToDisplay.textContent = 'Bienvenue dans le jeu Pong de Maxime CARIN ! Pour jouer, appuyez sur Entrée !';
                 game.textContainer.appendChild(game.textToDisplay);
-                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
                     var geometry = new THREE.TextGeometry("Niveau 1", {
                         font: font,
                         size: 0.5,
@@ -389,9 +389,9 @@ var game = {
                     mesh.rotation.y = 3.14/6
                     mesh.name = "Level";
                     view.scene.add( mesh );
-                    // Ajout du son correspondant au niveau 1
-                    game.impact = soundFootball;
                 } );
+                // Ajout du son correspondant au niveau 1
+                game.impact = soundFootball;
             }
 
 
@@ -405,7 +405,7 @@ var game = {
 
             // Le joueur marque un point
             if(player === "Player" || (game.player.score == 0 && game.offender.score == 0)){
-                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
                     var geometry = new THREE.TextGeometry( game.player.score.toString(), {
                         font: font,
                         size: 0.5,
@@ -436,7 +436,7 @@ var game = {
 
             // L'adversaire marque un point
             if(player === "Offender" || (game.player.score == 0 && game.offender.score == 0)) {
-                loader.load( 'src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
 
                     var geometry = new THREE.TextGeometry( game.offender.score.toString(), {
                         font: font,
@@ -509,27 +509,27 @@ class Background{
         const skyGeometry = new THREE.BoxGeometry(1500, 1500, 1500)
         const skyMaterials = [
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_nx.jpg'), //Right
+                map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/Background1/Ely1_nx.jpg'), //Right
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_px.jpg'), //Left
+                map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/Background1/Ely1_px.jpg'), //Left
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_py.jpg'), //Up
+                map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/Background1/Ely1_py.jpg'), //Up
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_pz.jpg'), //Down
+                map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/Background1/Ely1_pz.jpg'), //Down
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_pz.jpg'), //Back
+                map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/Background1/Ely1_pz.jpg'), //Back
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load('src/medias/images/Background1/Ely1_pz.jpg'), //Front
+                map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/Background1/Ely1_pz.jpg'), //Front
                 side: THREE.DoubleSide
             })
         ]
@@ -607,9 +607,9 @@ view.scene.add( game.ball.cube );
 
 //  Terrain
 var floor_geometry = new THREE.PlaneGeometry( 15, 10 );
-var img = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/soccerField.jpg')});
-img.map.needsUpdate = true;
-game.stage.mesh = new THREE.Mesh(floor_geometry, img);
+var img = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/soccerField.jpg");
+var mtlField = new THREE.MeshBasicMaterial({ map : img});
+game.stage.mesh = new THREE.Mesh(floor_geometry, mtlField);
 game.stage.mesh.overdraw = true;
 game.stage.mesh.material.side = THREE.DoubleSide;
 game.stage.mesh.rotation.x = 1.57079633;
@@ -660,7 +660,7 @@ activateShieldPla();
 function ajoutJokShield(x, y, z){
     const jokShieldGeometry = new THREE.PlaneGeometry( 1, 1 );
     textureJokShield = new THREE.MeshBasicMaterial ({transparent : true,
-        map : new THREE.TextureLoader().load("src/medias/images/shieldJok.png")});
+        map : new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/shieldJok.png")});
     var jokShieldMaterial = new THREE.MeshFaceMaterial (textureJokShield);
     game.joker.shield.meshFront = new THREE.Mesh(jokShieldGeometry, jokShieldMaterial);
     game.joker.shield.meshFront.position.x = x;
@@ -679,7 +679,7 @@ function ajoutJokShield(x, y, z){
 function ajoutJokBarre(x, y, z){
     const jokBarreGeometry = new THREE.PlaneGeometry( 1, 1 );
     textureJokBarre = new THREE.MeshBasicMaterial ({transparent : true,
-        map : new THREE.TextureLoader().load("src/medias/images/barreJok.png")});
+        map : new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/barreJok.png")});
     var jokBarreMaterial = new THREE.MeshFaceMaterial (textureJokBarre);
     game.joker.barre.meshFront = new THREE.Mesh(jokBarreGeometry, jokBarreMaterial);
     game.joker.barre.meshFront.position.x = x;
@@ -698,7 +698,7 @@ function ajoutJokBarre(x, y, z){
 function ajoutJokBarreMin(x, y, z){
     const jokBarreMinGeometry = new THREE.PlaneGeometry( 1, 1 );
     textureJokBarreMin = new THREE.MeshBasicMaterial ({transparent : true,
-        map : new THREE.TextureLoader().load("src/medias/images/barreMin.png")});
+        map : new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/barreMin.png")});
     var jokBarreMinMaterial = new THREE.MeshFaceMaterial (textureJokBarreMin);
     game.joker.barreMin.meshFront = new THREE.Mesh(jokBarreMinGeometry, jokBarreMinMaterial);
     game.joker.barreMin.meshFront.position.x = x;
@@ -717,7 +717,7 @@ function ajoutJokBarreMin(x, y, z){
 function ajoutJokDestruction(x, y, z){
     const jokDestructionGeometry = new THREE.PlaneGeometry( 1, 1 );
     textureJokDestruction = new THREE.MeshBasicMaterial ({transparent : true,
-        map : new THREE.TextureLoader().load("src/medias/images/destruction.png")});
+        map : new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/destruction.png")});
     var jokDestructionMaterial = new THREE.MeshFaceMaterial (textureJokDestruction);
     game.joker.destruction.meshFront = new THREE.Mesh(jokDestructionGeometry, jokDestructionMaterial);
     game.joker.destruction.meshFront.position.x = x;
@@ -781,7 +781,7 @@ view.camera.add( listenerFond );
 //      Football
 var soundFootball = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/football.ogg', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/football.mp3', function( buffer ) {
     soundFootball.setBuffer( buffer );
     soundFootball.setLoop( false );
     soundFootball.setVolume( 1 );
