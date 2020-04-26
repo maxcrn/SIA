@@ -1209,9 +1209,7 @@ function openFullscreen() {
 function makeScreenshot() {
     var w = window.open('', '');
     w.document.title = "Screenshot";
-    //w.document.body.style.backgroundColor = "red";
     var img = new Image();
-    // Without 'preserveDrawingBuffer' set to true, we must render now
     img.src = view.renderer.domElement.toDataURL();
     w.document.body.appendChild(img);
 }
