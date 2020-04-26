@@ -1220,7 +1220,7 @@ function accelerationJoueur(){
 let leftAcc;
 let rightAcc;
 
-
+var cameraPlayerInt;
 
 function clearAcc(){
     clearInterval(rightAcc);
