@@ -170,6 +170,8 @@ var game = {
                 // Effacement du score
                 var scorePlayer = view.scene.getObjectByName( "scorePlayer" );
                 view.scene.remove(scorePlayer);
+                var scoreOffender = view.scene.getObjectByName( "scoreOffender" );
+                view.scene.remove(scoreOffender);
                 // Remise en position du bouclier de l'adversaire
                 if(!game.offender.shieldUp){
                     game.offender.shieldUp = true;
