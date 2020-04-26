@@ -478,9 +478,7 @@ var game = {
 
             if(!game.stop){
                 game.timeoutStart = setTimeout(function(){
-
                     game.ball.vel.z = ball_vel_z > 0 ? game.ball.speed : -game.ball.speed;
-
                 }, 2000);
             }
         }
@@ -620,9 +618,9 @@ view.scene.add( game.stage.mesh );
 
 //  Adversaire
 var advGeometry = new THREE.PlaneGeometry( 20, 15 );
-var advImg = new THREE.MeshBasicMaterial({ map:THREE.ImageUtils.loadTexture('src/medias/images/zidane.jpg')});
-img.map.needsUpdate = true;
-game.offender.mesh = new THREE.Mesh(advGeometry, advImg);
+var advImg = new THREE.TextureLoader().load("https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/images/zidane.jpg");
+var mtlAdv = new THREE.MeshBasicMaterial({ map : advImg});
+game.offender.mesh = new THREE.Mesh(advGeometry, mtlAdv);
 game.offender.mesh.overdraw = true;
 game.offender.mesh.material.side = THREE.DoubleSide;
 game.offender.mesh.rotation.x = -3.14159265/10;
@@ -783,7 +781,7 @@ view.camera.add( listenerFond );
 //      Football
 var soundFootball = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/football.ogg', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/football.ogg', function( buffer ) {
     soundFootball.setBuffer( buffer );
     soundFootball.setLoop( false );
     soundFootball.setVolume( 1 );
@@ -792,7 +790,7 @@ audioLoader.load( 'src/medias/sounds/football.ogg', function( buffer ) {
 //      Tennis
 var soundTennis = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/tennis.ogg', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/tennis.ogg', function( buffer ) {
     soundTennis.setBuffer( buffer );
     soundTennis.setLoop( false );
     soundTennis.setVolume( 1 );
@@ -801,7 +799,7 @@ audioLoader.load( 'src/medias/sounds/tennis.ogg', function( buffer ) {
 //      Basket
 var soundBasket = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/basket.ogg', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/basket.ogg', function( buffer ) {
     soundBasket.setBuffer( buffer );
     soundBasket.setLoop( false );
     soundBasket.setVolume( 1 );
@@ -810,7 +808,7 @@ audioLoader.load( 'src/medias/sounds/basket.ogg', function( buffer ) {
 //  Son d'ambiance
 var sound = new THREE.Audio(listenerFond);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/musiqueFond.mp3', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/musiqueFond.mp3', function( buffer ) {
     sound.setBuffer( buffer );
     sound.setLoop( true );
     sound.setVolume( 0.25 );
@@ -822,7 +820,7 @@ audioLoader.load( 'src/medias/sounds/musiqueFond.mp3', function( buffer ) {
 
 var soundJokB = new THREE.Audio(listenerJokB);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/shield.wav', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/shield.wav', function( buffer ) {
     soundJokB.setBuffer( buffer );
     soundJokB.setLoop( false );
     soundJokB.setVolume( 0.75 );
@@ -833,7 +831,7 @@ audioLoader.load( 'src/medias/sounds/shield.wav', function( buffer ) {
 
 var soundJokA = new THREE.Audio(listenerJokA);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/augment.wav', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/augment.wav', function( buffer ) {
     soundJokA.setBuffer( buffer );
     soundJokA.setLoop( false );
     soundJokA.setVolume( 0.75 );
@@ -844,7 +842,7 @@ audioLoader.load( 'src/medias/sounds/augment.wav', function( buffer ) {
 
 var soundJokD = new THREE.Audio(listenerJokD);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/reduc.wav', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/reduc.wav', function( buffer ) {
     soundJokD.setBuffer( buffer );
     soundJokD.setLoop( false );
     soundJokD.setVolume( 0.75 );
@@ -855,7 +853,7 @@ audioLoader.load( 'src/medias/sounds/reduc.wav', function( buffer ) {
 
 var soundJokDB = new THREE.Audio(listenerJokDB);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/medias/sounds/destru.mp3', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/destru.mp3', function( buffer ) {
     soundJokDB.setBuffer( buffer );
     soundJokDB.setLoop( false );
     soundJokDB.setVolume( 0.75 );
@@ -1324,6 +1322,7 @@ document.onkeydown=function(e){
         if(game.stop){
             game.stop = false;
         }
+        game.impact.play();
     }
 
     if(e.keyCode == 72){
