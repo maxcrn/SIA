@@ -496,7 +496,7 @@ var game = {
     view = {
         scene    : new THREE.Scene(),
         camera   : new THREE.PerspectiveCamera( game.fov, window.innerWidth / window.innerHeight, .1, 1000 ),
-        renderer : new THREE.WebGLRenderer({alpha:true})
+        renderer : new THREE.WebGLRenderer({alpha:true, preserveDrawingBuffer:true})
     }
 
 // Set the size of the renderer to game dimensions
@@ -1207,14 +1207,13 @@ function openFullscreen() {
 
 
 function makeScreenshot() {
-    html2canvas(document.body, {
-        onrendered: function(canvas)
-        {
-            canvas.toBlob(function(blob) {
-                saveAs(blob, "wholePage.png");
-            });
-        }
-    });
+    var w = window.open('', '');
+    w.document.title = "Screenshot";
+    //w.document.body.style.backgroundColor = "red";
+    var img = new Image();
+    // Without 'preserveDrawingBuffer' set to true, we must render now
+    img.src = view.renderer.domElement.toDataURL();
+    w.document.body.appendChild(img);
 }
 
 function accelerationJoueur(){
@@ -1342,6 +1341,7 @@ document.onkeydown=function(e){
                 "f : Passer en plein écran (échap pour quitter) <br>" +
                 "s : Activer ou désactiver la musique de fond <br>" +
                 "h : Afficher ou cacher l'aide <br>" +
+                "p : Effectuer une capture d'écran qui s'ouvrira dans un nouvel onglet ou une nouvelle fenêtre <br>" +
                 "Codes : <br>" +
                 "r : Activer ou désactiver le mode ralenti de l'adversaire <br>" +
                 "k : Désactiver le bouclier adverse" ;
