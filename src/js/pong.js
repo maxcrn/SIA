@@ -367,7 +367,8 @@ var game = {
                 game.textToDisplay = document.createElement('div');
                 game.textToDisplay.textContent = 'Bienvenue dans le jeu Pong de Maxime CARIN ! Pour jouer, appuyez sur Entrée !';
                 game.textContainer.appendChild(game.textToDisplay);
-                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json',
+                    function ( font ) {
                     var geometry = new THREE.TextGeometry("Niveau 1", {
                         font: font,
                         size: 0.5,
@@ -405,7 +406,8 @@ var game = {
 
             // Le joueur marque un point
             if(player === "Player" || (game.player.score == 0 && game.offender.score == 0)){
-                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json', function ( font ) {
+                loader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/fonts/Three_Light.json',
+                    function ( font ) {
                     var geometry = new THREE.TextGeometry( game.player.score.toString(), {
                         font: font,
                         size: 0.5,
@@ -478,8 +480,7 @@ var game = {
 
             if(!game.stop){
                 game.timeoutStart = setTimeout(function(){
-                    game.ball.vel.z = ball_vel_z > 0 ? game.ball.speed : -game.ball.speed;
-                }, 2000);
+                    game.ball.vel.z = ball_vel_z > 0 ? game.ball.speed : -game.ball.speed;}, 2000);
             }
         }
 
@@ -781,7 +782,8 @@ view.camera.add( listenerFond );
 //      Football
 var soundFootball = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/football.mp3', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/football.mp3',
+    function( buffer ) {
     soundFootball.setBuffer( buffer );
     soundFootball.setLoop( false );
     soundFootball.setVolume( 1 );
@@ -790,7 +792,8 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
 //      Tennis
 var soundTennis = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/tennis.ogg', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/tennis.ogg',
+    function( buffer ) {
     soundTennis.setBuffer( buffer );
     soundTennis.setLoop( false );
     soundTennis.setVolume( 1 );
@@ -799,7 +802,8 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
 //      Basket
 var soundBasket = new THREE.Audio(listener);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/basket.ogg', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/basket.ogg',
+    function( buffer ) {
     soundBasket.setBuffer( buffer );
     soundBasket.setLoop( false );
     soundBasket.setVolume( 1 );
@@ -808,7 +812,8 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
 //  Son d'ambiance
 var sound = new THREE.Audio(listenerFond);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/musiqueFond.mp3', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/musiqueFond.mp3',
+    function( buffer ) {
     sound.setBuffer( buffer );
     sound.setLoop( true );
     sound.setVolume( 0.25 );
@@ -820,7 +825,8 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
 
 var soundJokB = new THREE.Audio(listenerJokB);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/shield.wav', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/shield.wav',
+    function( buffer ) {
     soundJokB.setBuffer( buffer );
     soundJokB.setLoop( false );
     soundJokB.setVolume( 0.75 );
@@ -831,7 +837,8 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
 
 var soundJokA = new THREE.Audio(listenerJokA);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/augment.wav', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/augment.wav',
+    function( buffer ) {
     soundJokA.setBuffer( buffer );
     soundJokA.setLoop( false );
     soundJokA.setVolume( 0.75 );
@@ -842,7 +849,8 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
 
 var soundJokD = new THREE.Audio(listenerJokD);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/reduc.wav', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/reduc.wav',
+    function( buffer ) {
     soundJokD.setBuffer( buffer );
     soundJokD.setLoop( false );
     soundJokD.setVolume( 0.75 );
@@ -853,7 +861,8 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
 
 var soundJokDB = new THREE.Audio(listenerJokDB);
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/destru.mp3', function( buffer ) {
+audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/medias/sounds/destru.mp3',
+    function( buffer ) {
     soundJokDB.setBuffer( buffer );
     soundJokDB.setLoop( false );
     soundJokDB.setVolume( 0.75 );
@@ -1086,9 +1095,7 @@ function render() {
 
     // Collision avec les raquettes
     if(	game.ball.z - (game.ball.d/2) <= game.stage.z - (game.stage.h/2) + (game.offender.d/2)){
-
         apparitionJoker();
-
         if( game.ball.x + (game.ball.d/2) > game.offender.x - (game.offender.w/2) &&
             game.ball.x - (game.ball.d/2) < game.offender.x + (game.offender.w/2)){
             game.ball.vel.z -= .0025; // Accélération de la balle
@@ -1170,14 +1177,13 @@ function render() {
 
     }
 
-
-
-    if(game.ball.x > (game.stage.w/2))
+    if(game.ball.x < -(game.stage.w/2)){
         game.ball.vel.x *= -1;
+    }
 
-    if(game.ball.x < -(game.stage.w/2))
+    if(game.ball.x > (game.stage.w/2)){
         game.ball.vel.x *= -1;
-
+    }
 
     requestAnimationFrame(render);
     view.renderer.render(view.scene, view.camera);
@@ -1322,7 +1328,6 @@ document.onkeydown=function(e){
         if(game.stop){
             game.stop = false;
         }
-        game.impact.play();
     }
 
     if(e.keyCode == 72){
