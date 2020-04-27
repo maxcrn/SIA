@@ -1341,7 +1341,8 @@ document.onkeydown=function(e){
                 "p : Effectuer une capture d'écran qui s'ouvrira dans un nouvel onglet ou une nouvelle fenêtre <br>" +
                 "Codes : <br>" +
                 "r : Activer ou désactiver le mode ralenti de l'adversaire <br>" +
-                "k : Désactiver le bouclier adverse" ;
+                "k : Désactiver le bouclier adverse <br>" +
+                "i : Activer ou désactiver le mode invincible" ;
             game.helpContainer.appendChild(game.helpText);
             game.helpDisplayed = true;
         }
