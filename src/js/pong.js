@@ -418,7 +418,7 @@ var game = {
                         bevelSegments: 0.5
                     } );
                     geometry.center();
-                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    var material = new THREE.MeshLambertMaterial({color: 0x14A6F4});;
                     mesh = new THREE.Mesh( geometry, material );
                     mesh.position.x = 2;
                     mesh.position.y = 5;
@@ -450,7 +450,7 @@ var game = {
                         bevelSegments: 0.5
                     } );
                     geometry.center();
-                    var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});;
+                    var material = new THREE.MeshLambertMaterial({color: 0xF41414});;
                     mesh = new THREE.Mesh( geometry, material );
                     mesh.position.x = -2.4;
                     mesh.position.y = 5;

@@ -21,7 +21,7 @@ canvas{
 
 #labels {
     position: absolute;
-    color: #CEA9A3;
+    color: #BAE0E4;
     text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5);
     font-size: 30px;
     text-align: center;
@@ -31,7 +31,7 @@ canvas{
 
 #goals {
     position: absolute;
-    color: #CEA9A3;
+    color: #BAE0E4;
     text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5);
     font-size: 30px;
     text-align: center;
@@ -41,7 +41,7 @@ canvas{
 
 #help {
     position: absolute;
-    color: #CEA9A3;
+    color: #BAE0E4;
     text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5);
     font-size: 15px;
     text-align: left;
