@@ -838,7 +838,7 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
     function( buffer ) {
     soundJokA.setBuffer( buffer );
     soundJokA.setLoop( false );
-    soundJokA.setVolume( 0.75 );
+    soundJokA.setVolume( 0.35 );
     game.joker.barre.sound = soundJokA;
 });
 
@@ -850,7 +850,7 @@ audioLoader.load( 'https://raw.githubusercontent.com/maxcrn/SIA/master/src/media
     function( buffer ) {
     soundJokD.setBuffer( buffer );
     soundJokD.setLoop( false );
-    soundJokD.setVolume( 0.75 );
+    soundJokD.setVolume( 0.35 );
     game.joker.barreMin.sound = soundJokD;
 });
 
