@@ -19,7 +19,6 @@ var game = {
         restartNew : false,
         helpDisplayed : false,
         player : {
-
             speed : 0.20,
             w : 3,
             h : .5,
@@ -498,10 +497,8 @@ var game = {
         renderer : new THREE.WebGLRenderer({alpha:true, preserveDrawingBuffer:true})
     }
 
-// Set the size of the renderer to game dimensions
 view.renderer.setSize( window.innerWidth - 10, window.innerHeight);
 
-// Put the canvas element into document
 document.body.appendChild( view.renderer.domElement);
 
 // Background
@@ -922,7 +919,8 @@ function activateBarreAgr(player){
         if(game.player.barreCD != null){
             window.clearTimeout(game.player.barreCD);
         }
-        game.player.barreCD = setTimeout(function(){ genererBarrePla(3, game.player.h, game.player.d); }, 5000)
+        game.player.barreCD = setTimeout(function(){ genererBarrePla(3, game.player.h, game.player.d); },
+            5000)
         setTimeout(function(){game.player.barreAgr = false;}, 5000);
     }
     else{
@@ -930,7 +928,8 @@ function activateBarreAgr(player){
         if(game.offender.barreCD != null){
             window.clearTimeout(game.offender.barreCD);
         }
-        game.offender.barreCD = setTimeout(function(){ genererBarreOff(3, game.offender.h, game.offender.d); }, 5000)
+        game.offender.barreCD = setTimeout(function(){ genererBarreOff(3, game.offender.h, game.offender.d); },
+            5000)
         setTimeout(function(){game.offender.barreAgr = false;}, 5000);
     }
 }
@@ -986,22 +985,18 @@ function render() {
 
     if(controller.left && game.player.x - (game.player.w/2) > -(game.stage.w/2)){
         game.player.x -= game.player.speed;
-        //view.camera.position.x -= 0.5;
     }
 
     if(controller.right && game.player.x + (game.player.w/2) < (game.stage.w/2)){
         game.player.x += game.player.speed;
-        //view.camera.position.x += 0.5;
     }
 
     if(game.offender.x > game.ball.x && game.offender.x - (game.offender.w/2) > -(game.stage.w/2)){
         game.offender.x -= game.offender.speed;
-        //view.camera.position.x -= 0.5;
     }
 
     if(game.offender.x < game.ball.x && game.offender.x + (game.offender.w/2) < (game.stage.w/2)){
         game.offender.x += game.offender.speed;
-        //view.camera.position.x += 0.5;
     }
 
     game.ball.z += game.ball.vel.z;
@@ -1193,18 +1188,16 @@ render();
 
 game.reset();
 
-/* Get the documentElement (<html>) to display the page in fullscreen */
 var elem = document.documentElement;
 
-/* View in fullscreen */
 function openFullscreen() {
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
+    } else if (elem.mozRequestFullScreen) {
         elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    } else if (elem.msRequestFullscreen) {
         elem.msRequestFullscreen();
     }
 }
@@ -1240,14 +1233,16 @@ document.onkeydown=function(e){
     if(e.keyCode == 37){
         clearAcc();
         controller.left = true;
-        leftAcc = setInterval(accelerationJoueur, 50);
+        leftAcc = setInterval(function accelerationJoueur(){game.player.speed += 0.02;},
+            50);
     }
 
     if(e.keyCode == 39)
     {
         clearAcc();
         controller.right = true;
-        rightAcc = setInterval(accelerationJoueur, 50);
+        rightAcc = setInterval(function accelerationJoueur(){game.player.speed += 0.02;},
+            50);
     }
 
     // Caméra de la barre : é
@@ -1321,6 +1316,11 @@ document.onkeydown=function(e){
         }
     }
 
+    // Apparition d'un joker : j
+    if(e.keyCode == 74){
+        apparitionJoker();
+    }
+
     if (e.keyCode == 13 && game.stop) {
         window.clearTimeout(game.timeoutStart);
         game.ball.vel.z = game.lastWinner > 0 ? game.ball.speed : -game.ball.speed;
@@ -1347,7 +1347,8 @@ document.onkeydown=function(e){
                 "Codes : <br>" +
                 "r : Activer ou désactiver le mode ralenti de l'adversaire <br>" +
                 "k : Désactiver le bouclier adverse <br>" +
-                "i : Activer ou désactiver le mode invincible" ;
+                "i : Activer ou désactiver le mode invincible <br>" +
+                "j : Tenter de faire apparaitre un joker" ;
             game.helpContainer.appendChild(game.helpText);
             game.helpDisplayed = true;
         }
