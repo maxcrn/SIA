@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="rapport\css\rapport.css" media="all" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <meta charset="utf-8" />
+    <title>Rapport de SIA - Pong 3D</title>
+
+</head>
+
+
+
+<body>
+    <div id ="all">
+
+        <div id="tableMatieres" class="container-fluid">
+            <h2>Table des matières</h2>
+            <p>
+                <a href="#_Toc38973007" class="titre1">
+                    I. Déroulement du jeu
+                </a><br>
+                <a href="#_Toc38973011" class="titre2">
+                    A. But, gain de manche, changement de niveau et fin de jeu
+                </a>
+            </p>
+
+            <p>
+                <a href="#_Toc38973012" class="titre1">
+                    II. Fenêtre graphique 3D
+                </a><br>
+                <a href="#_Toc38973013" class="titre2">
+                    A. Adaptation dynamique de la fenêtre
+                </a><br>
+                <a href="#_Toc38973014" class="titre2">
+                    B. Passage en plein écran
+                </a><br>
+                <a href="#_Toc38973015" class="titre2">
+                    C. Capture d’écran
+                </a>
+            </p>
+
+            <p>
+                <a href="#_Toc38973016" class="titre1">
+                    III. Graphismes
+                </a><br>
+                <a href="#_Toc38973017" class="titre2">
+                    A. Décor 3D
+                </a><br>
+                <a href="#_Toc38973018" class="titre2">
+                    B. Représentation de l’adversaire
+                </a><br>
+                <a href="#_Toc38973019" class="titre2">
+                    C. Divers modèles du jeu
+                </a>
+            </p>
+
+
+            <p>
+                <a href="#_Toc38973020" class="titre1">
+                    IV. Dialogues avec l’utilisateur
+                </a><br>
+                <a href="#_Toc38973021" class="titre2">
+                    A. Signalement de point marqué et passage à un nouveau niveau
+                </a><br>
+                <a href="#_Toc38973022" class="titre2">
+                    B. Affichage de l’aide
+                </a>
+            </p>
+
+
+            <p>
+                <a href="#_Toc38973023" class="titre1">
+                    V. Points de vue caméra
+                </a>
+            </p>
+
+
+            <p>
+                <a href="#_Toc38973024" class="titre1">
+                    VI. Gestion des collisions
+                </a>
+            </p>
+
+
+            <p>
+                <a href="#_Toc38973025" class="titre1">
+                    VII. Dynamique
+                </a><br>
+                <a href="#_Toc38973026" class="titre2">
+                    A. Impacts avec la balle
+                </a><br>
+                <a href="#_Toc38973027" class="titre2">
+                    B. Inertie des raquettes
+                </a>
+            </p>
+
+
+            <p>
+                <a href="#_Toc38973028" class="titre1">
+                    VIII. Jokers
+                </a><br>
+                <a href="#_Toc38973029" class="titre2">
+                    A. Allongement/Rétrécissement des raquettes
+                </a><br>
+                <a href="#_Toc38973030" class="titre2">
+                    B. Bouclier supplémentaire
+                </a><br>
+                <a href="#_Toc38973031" class="titre2">
+                    C. Destruction du bouclier adverse
+                </a>
+            </p>
+
+
+            <p>
+                <a href="#_Toc38973032" class="titre1">
+                    IX. Intelligence artificielle de l’adversaire
+                </a>
+            </p>
+
+            <p>
+                <a href="#_Toc38973033" class="titre1">
+                    X. Musique et sons
+                </a><br>
+                <a href="#_Toc38973034" class="titre2">
+                    A. Sons
+                </a><br>
+                <a href="#_Toc38973035" class="titre2">
+                    B. Musique
+                </a>
+            </p>
+
+            <p>
+                <a href="#_Toc38973036" class="titre1">
+                    XI. Triche
+                </a><br>
+                <a href="#_Toc38973037" class="titre2">
+                    A. Mode invincible
+                </a><br>
+                <a href="#_Toc38973038" class="titre2">
+                    B. Apparition d’un joker
+                </a><br>
+                <a href="#_Toc38973039" class="titre2">
+                    C. Destruction du bouclier de l’adversaire
+                </a><br>
+                <a href="#_Toc38973040" class="titre2">
+                    D. Ralentissement de l’adversaire
+                </a>
+            </p>
+
+        </div>
+
+
+        <div id="rapport" class="container-fluid">
+
+            <header>
+                <h1 align=center> Rapport de SIA - Pong 3D </h1>
+                <h2 align=center> CARIN Maxime </h2>
+            </header>
+
+            <h1 id="_Toc38973007">
+                I. Déroulement du jeu
+            </h1>
+            <p>
+                Afin de développer ce jeu, j’ai créé un fichier javascript contenant une
+                classe « game » avec de nombreux attributs permettant le bon déroulement
+                des parties.
+            </p>
+            <p>
+                Tous les liens vers les fichiers de ce projet sont vers GitHub afin de
+                pouvoir afficher le jeu sans erreurs CORS.
+            </p>
+            <p>
+                Dans cette classe, il y a deux autres classes nommées « player » et «
+                offender » qui contiennent les attributs du joueur humain et du joueur à
+                l’intelligence artificielle. Les attributs sont par exemple :
+            </p>
+            <ul>
+                <li>
+                    Les dimensions de la raquette du joueur.
+                </li>
+                <li>
+                    La vitesse de sa raquette.
+                </li>
+                <li>
+                    Diverses variables initialisées à « null » qui seront utilisés pour les
+                    modèles physiques qui lui seront attribués tels que son bouclier ou sa
+                    raquette.
+                </li>
+                <li>
+                    Divers booléens qui seront utilisés pour, par exemple, savoir s’il
+                    possède son bouclier.
+                </li>
+            </ul>
+            <p align="center">
+                <img
+                        width="349"
+                        height="278"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png"
+                />
+            </p>
+            <p align="center">
+                Figure 1 : Classe joueur
+            </p>
+            <p>
+                Il y a une classe « ball » qui représente la balle et tous ses attributs, à
+                savoir, ses dimensions, sa vitesse, sa position et son modèle physique.
+            </p>
+            <p>
+                Il y a une classe « stage » qui représente le terrain et ses attributs,
+                tels que ses dimensions, le niveau auquel est le joueur et son modèle
+                physique.
+            </p>
+            <p>
+                La classe « joker » sera présentée dans la partie consacrée.
+            </p>
+            <h2 id="_Toc38973011">
+                A. But, gain de manche, changement de niveau et fin de jeu
+            </h2>
+            <p>
+                Lorsqu’un joueur marque un but, la fonction game.reset() est appelée avec
+                le nom du joueur en paramètre afin de relancer le jeu avec la balle au
+                centre, de faire toutes les modifications nécessaires et de remettre un
+                bouclier au perdant.
+            </p>
+            <p align="center">
+                <img
+                        width="334"
+                        height="130"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png"
+                />
+            </p>
+            <p align="center">
+                Figure 2 : But du joueur Player
+            </p>
+            <p>
+                Lorsque le joueur gagne une manche, il gagne le droit de passer au niveau
+                suivant. Pour cela, les modèles de l’adversaire correspondant au niveau
+                actuel sont supprimés pour laisser à place aux modèles de l’adversaire du
+                niveau suivant.
+            </p>
+            <p align="center">
+                <img
+                        width="603"
+                        height="409"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png"
+                />
+            </p>
+            <p align="center">
+                Figure 3 : Début de passage au niveau 2
+            </p>
+            <p>
+                Voici un exemple d’une partie des modèles du niveau 1 qui sont supprimés
+                pour laisser place à ceux du niveau 2. En effet, lors d’un changement de
+                niveau, sont modifiés ou supprimés et recréés :
+            </p>
+            <ul>
+                <li>
+                    La balle et sa vitesse
+                </li>
+                <li>
+                    Le terrain et les scores
+                </li>
+                <li>
+                    L’adversaire et la vitesse de sa raquette
+                </li>
+                <li>
+                    Le son de la balle
+                </li>
+            </ul>
+            <p>
+                · Le titre du niveau (« Niveau 2 » sur la gauche)
+            </p>
+            <p align="center">
+                <img
+                        width="605"
+                        height="271"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png"
+                />
+            </p>
+            <p align="center">
+                Figure 4 : Fin du jeu
+            </p>
+            <p>
+                Comme on le voit ci-dessus le jeu peut se terminer de deux façons :
+            </p>
+            <ul>
+                <li>
+                    Une victoire de l’adversaire (1<sup>er</sup> if), dans ce cas un
+                    message de défaite apparaît et les variables game.restartNew et
+                    game.stop passent à true.
+                </li>
+                <li>
+                    Une victoire du joueur (2<sup>ème</sup> if), dans ce cas un message de
+                    victoire apparaît et les variables game.restartNew et game.stop passent
+                    à true.
+                </li>
+            </ul>
+            <p>
+                Le joueur peut alors relancer le jeu en repartant du niveau 1. Pour cela,
+                il doit appuyer sur Entrée.
+            </p>
+            <p>
+                Dans ce cas, le jeu se relancera grâce à un « if(game.restartNew) » prévu à
+                cet effet dans la fonction game.reset qui aura la même utilité que les
+                fonctions de changement de niveau en affichant les bons modèles et en
+                modifiant toutes les données nécessaires.
+            </p>
+            <h1 id="_Toc38973012">
+                II. Fenêtre graphique 3D
+            </h1>
+            <h2 id="_Toc38973013">
+                A. Adaptation dynamique de la fenêtre
+            </h2>
+            <p align="center">
+                <img
+                        width="577"
+                        height="174"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image011.png"
+                />
+            </p>
+            <p align="center">
+                Figure 5 : Fonction permettant l'adaptation dynamique
+            </p>
+            <p>
+                Ce code permet d’appeler la fonction « onWindowResize » dès que la taille
+                de la fenêtre est modifiée. Cette fonction ajuste la caméra afin que le jeu
+                reste le même malgré les redimensionnements de la fenêtre.
+            </p>
+            <h2 id="_Toc38973014">
+                B. Passage en plein écran
+            </h2>
+            <p align="center">
+                <img
+                        width="374"
+                        height="277"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image012.png"
+                />
+            </p>
+            <p align="center">
+                Figure 6 : Fonction de passage en plein écran
+            </p>
+            <p>
+                Cette fonction permet le passage en plein écran pour de nombreux
+                navigateurs différents. Elle est appelée dès que l’on appuie sur la touche
+                F. Elle permet de récupérer d’abord l’élément a passer en plein avant de
+                faire la requête de passage en plein écran qui peut varier selon les
+                différents navigateurs. Ces navigateurs gèrent le mode plein écran et
+                permettent de quitter ce mode en appuyant sur la touche echap.
+            </p>
+            <h2 id="_Toc38973015">
+                C. Capture d’écran
+            </h2>
+            <p align="center">
+                <img
+                        width="411"
+                        height="146"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image013.png"
+                />
+            </p>
+            <p align="center">
+                Figure 7 : Fonction pour la capture d'écran
+            </p>
+            <p>
+                Cette fonction permet d’effectuer une capture d’écran. Elle sélectionne
+                tous les éléments de la scène THREE JS, en fait une image et affiche cette
+                image dans un nouvel onglet. Elle est appelée en appuyant sur la touche P.
+            </p>
+            <h1 id="_Toc38973016">
+                III. Graphismes
+            </h1>
+            <h2 id="_Toc38973017">
+                A. Décor 3D
+            </h2>
+            <p align="center">
+                <img
+                        width="605"
+                        height="354"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image015.png"
+                />
+            </p>
+            <p align="center">
+                Figure 8 : Création du décor
+            </p>
+            <p>
+                Pour représenter le fond, j’ai créé une « Box » qui va entourer le terrain.
+                Cette « Box » est un cube et possède donc 6 faces, sur chacune de ces
+                faces, il y a une image. Ces images permettent de représenter un décor qui
+                donne une impression d’horizon.
+            </p>
+            <h2 id="_Toc38973018">
+                B. Représentation de l’adversaire
+            </h2>
+            <p align="center">
+                <img
+                        width="604"
+                        height="134"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image017.png"
+                />
+            </p>
+            <p align="center">
+                Figure 9 : Création de l'adversaire
+            </p>
+            <p>
+                Cela permet de créer le modèle de l’adversaire grâce à l’image
+                correspondant au niveau 1. Un simple polygone placé de façon à être face au
+                joueur. A chaque changement de niveau ce modèle est supprimé et recréé afin
+                de représenter le nouvel adversaire. Ces adversaires sont basés sur le
+                thème du sport comme pour le jeu dans sa globalité (Niveau 1 : Football
+                avec Zinédine Zidane, Niveau 2 : Tennis avec Roger Federer et Niveau 3 :
+                Basketball avec LeBron James).
+            </p>
+            <h2 id="_Toc38973019">
+                C. Divers modèles du jeu
+            </h2>
+            <p align="center">
+                <img
+                        width="570"
+                        height="474"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image018.png"
+                />
+            </p>
+            <p align="center">
+                Figure 10 : Création de la raquette d'un joueur
+            </p>
+            <p>
+                Cette fonction permet la création de la raquette d’un joueur en spécifiant
+                ses 3 dimensions longueur, largeur, hauteur. Elle permet aussi de remplacer
+                la raquette d’un joueur si elle est déjà créée (cela sera utile pour les
+                jokers).
+            </p>
+            <p align="center">
+                <img
+                        width="390"
+                        height="97"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image020.png"
+                />
+            </p>
+            <p align="center">
+                Figure 11 : Création de la balle
+            </p>
+            <p>
+                Cela permet de créer la balle grâce à un programme permettant de générer
+                des balles de sport (ballon de football sur l’exemple correspondant au
+                premier niveau).
+            </p>
+            <p align="center">
+                <img
+                        width="604"
+                        height="121"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image022.png"
+                />
+            </p>
+            <p align="center">
+                Figure 12 : Création du terrain
+            </p>
+            <p>
+                Cela permet de créer le terrain grâce à l’image correspondant au niveau 1.
+                Un simple polygone avec une image de terrain de sport (terrain de football
+                sur l’exemple correspondant au premier niveau).
+            </p>
+            <p align="center">
+                <img
+                        width="606"
+                        height="175"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image024.png"
+                />
+            </p>
+            <p align="center">
+                Figure 13 : Création d'un bouclier (Offender)
+            </p>
+            <p>
+                Cela permet de créer le modèle un bouclier (celui de Offender) au début de
+                la partie. Un polygone placé à l’extrémité du terrain juste derrière la
+                raquette dont on modifie l’opacité pour lui donner une apparence de
+                bouclier en verre.
+            </p>
+            <p align="center">
+                <img
+                        width="606"
+                        height="250"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image026.png"
+                />
+            </p>
+            <p align="center">
+                Figure 14 : Création du modèle d'un joker
+            </p>
+            <p>
+                Fonction permettant l’ajout d’un joker avec ses coordonnées (x, y, z). Les
+                jokers seront représentés avec deux polygones dos à dos qui pivotent afin
+                d’afficher les images des deux côtés. Ce sont des images png sans fond, de
+                ce fait le paramètre « transparent : true » permet de leur donner la forme
+                de l’image sans fond.
+            </p>
+            <p align="center">
+                <img
+                        width="563"
+                        height="420"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image028.png"
+                />
+            </p>
+            <p align="center">
+                Figure 15 : Initialisation du texte et du son du niveau
+            </p>
+            <p>
+                Je créé ici le modèle de texte qui affichera le niveau (Niveau 1). Ce texte
+                est affiché grâce à un « TextGeometry » auquel on attribue une police sous
+                format json. Il a également un nom afin de pouvoir le retrouver dans la
+                scène et le supprimer pour le mettre à jour en le recréant.
+            </p>
+            <p align="center">
+                <img
+                        width="553"
+                        height="414"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image030.png"
+                />
+            </p>
+            <p align="center">
+                Figure 16 : Affichage du score pour le joueur "Player"
+            </p>
+            <p>
+                J’affiche ici le score du joueur « Player », deux cas de figures possibles
+                :
+            </p>
+            <p>
+                · Début de partie et les scores sont à 0 alors il y a juste un affichage
+                des scores qui s’effectue.
+            </p>
+            <p>
+                · But de « player », alors le score a été effacé juste avant afin d’être
+                recréé ici.
+            </p>
+            <p>
+                Ce score est affiché grâce à la même technologie que le Niveau décrite
+                ci-dessus.
+            </p>
+            <h1 id="_Toc38973020">
+                IV. Dialogues avec l’utilisateur
+            </h1>
+            <h2 id="_Toc38973021">
+                A. Signalement de point marqué et passage à un nouveau niveau
+            </h2>
+            <p>
+                Comme il est possible de le voir sur la Figure 21, dès qu’un joueur marque
+                on ajoute un élément « game.player.goalText » à game.goalContainer. Cet
+                élément est un message signifiant qu’un but vient d’être inscrit. Il
+                disparait après une seconde.
+            </p>
+            <p>
+                Il y a un message au début du jeu comme on peut le voir sur la Figure 20
+                afin de permettre au joueur de débuter le jeu en appuyant sur Entrée. Ce
+                message disparait dès que le joueur appuie.
+            </p>
+            <p>
+                Il y a également un message qui est délivré lorsque le joueur perd ou gagne
+                et ce message lui permet, en appuyant sur Entrée, de relancer le jeu. Ce
+                message disparait dès que le joueur appuie.
+            </p>
+            <p>
+                Enfin il y a un message lorsqu’un joueur gagne un niveau et passe au niveau
+                suivant, l’invitant à lancer le nouveau niveau en appuyant sur Entrée. Ce
+                message disparait dès que le joueur appuie.
+            </p>
+            <h2 id="_Toc38973022">
+                B. Affichage de l’aide
+            </h2>
+            <p align="center">
+                <img
+                        width="574"
+                        height="334"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image032.png"
+                />
+            </p>
+            <p align="center">
+                Figure 17 : Affichage de l'aide
+            </p>
+            <p>
+                L’aide s’affichera en haut à gauche de la fenêtre avec un appui sur la
+                touche H, il disparaitra avec un nouvel appui sur H. Cet aide permet
+                d’afficher tous les raccourcis clavier disponibles. Comme tous les texte
+                précédents il est afficher dans une « div » créé spécialement à cet effet.
+            </p>
+            <h1 id="_Toc38973023">
+                V. Points de vue caméra
+            </h1>
+            <p align="center">
+                <img
+                        width="471"
+                        height="363"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image033.png"
+                />
+            </p>
+            <p align="center">
+                Figure 18 : Création des caméras
+            </p>
+            <p align="center">
+                <img
+                        width="473"
+                        height="210"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image034.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 19 : Raccourcis clavier pour changer de caméra
+            </p>
+            <p>
+                Deux caméras sont proposées dans ce jeu. La première permet un affichage
+                classique en voyant tout le terrain d’un point de vue du joueur en hauteur,
+                elle est fixe. La deuxième permet un affichage suivant la barre du joueur.
+                Pour réaliser cette caméra, une fonction attribuant les positions de la
+                barre à la caméra est appelée en boucle toutes les 20 millisecondes. Afin
+                de passer d’une caméra l’autre il faut appuyer sur &amp; pour la caméra 1
+                et é pour la caméra 2.
+            </p>
+            <br clear="all"/>
+            <h1 id="_Toc38973024">
+                VI. Gestion des collisions
+            </h1>
+            <p>
+                Les échanges sont réalisés entre les raquettes de chaque joueur. Pour
+                réaliser le système de collisions, j’ai utilisé un simple système de
+                coordonnées :
+            </p>
+            <p align="center">
+                <img
+                        width="605"
+                        height="658"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image036.png"
+                />
+            </p>
+            <p align="center">
+                Figure 20 : Système de collision de "offender"
+            </p>
+            <p>
+                Cette capture d’écran représente une collision du côté de « offender » qui
+                est l’adversaire. On constate que si la balle atteint son extrémité du
+                plateau, il y a alors plusieurs cas de figures :
+            </p>
+            <p>
+                · Sa raquette est placée au même endroit alors la balle est renvoyée avec
+                une accélération, en inversant sa vitesse sur l’axe z (multipliée par -1)
+                et en donnant une vitesse sur l’axe x selon l’endroit de la raquette où
+                elle rebondit.
+            </p>
+            <p>
+                · Sa raquette n’est pas au bon endroit mais il dispose d’un bouclier alors
+                la balle sera renvoyée de la même manière mais comme si cela été un simple
+                rebond mais avec tout de même une accélération (pas de changement
+                d’orientation sur l’axe x). Son bouclier sera désactivé.
+            </p>
+            <p>
+                · Sa raquette n’est pas au bon endroit et il n’a pas de bouclier, alors le
+                joueur adverse marque un point et le jeu recommence.
+            </p>
+            <p align="center">
+                <img
+                        width="251"
+                        height="126"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image038.png"
+                />
+            </p>
+            <p align="center">
+                Figure 21 : Collisions sur les côtés du plateau
+            </p>
+            <p>
+                Comme on peut le voir ci-dessus, la même technologie avec les coordonnées
+                est utilisée pour les collisions sur les côtés du plateau.
+            </p>
+            <p align="center">
+                <img
+                        width="605"
+                        height="237"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image040.png"
+                />
+            </p>
+            <p align="center">
+                Figure 22 : Repositionnement et lancement et de la balle après chaque
+                échange
+            </p>
+            <p>
+                Après chaque échange, la balle est repositionnée au milieu du terrain et
+                envoyée vers le joueur qui vient de perdre le point.
+            </p>
+            <p align="center">
+                <img
+                        width="475"
+                        height="255"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image041.png"
+                />
+            </p>
+            <p align="center">
+                Figure 23 : Déplacement de la raquette
+            </p>
+            <p>
+                Afin de renvoyer la balle, le joueur doit pouvoir déplacer sa raquette, il
+                peut le faire grâce aux touches latérales comme on peut le voir. De plus
+                chaque déplacement créé une accélération pour la raquette du joueur.
+            </p>
+            <h1 id="_Toc38973025">
+                VII. Dynamique
+            </h1>
+            <h2 id="_Toc38973026">
+                A. Impacts avec la balle
+            </h2>
+            <p align="center">
+                <img
+                        width="605"
+                        height="253"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image042.png"
+                />
+            </p>
+            <p align="center">
+                Figure 24 : Impact de la balle sur une raquette
+            </p>
+            <p>
+                Comme on peut le voir, dès qu’une balle entre en collision avec une
+                raquette sa vitesse est augmentée (game.ball.vel.z -= 0.0025). Cette
+                accélération est légère mais si l’échange dure elle se fait ressentir. De
+                plus comme on peut le voir dans le paragraphe sur les changements de niveau
+                (A CHANGER), la vitesse augmente pour chaque niveau afin d’augmenter la
+                difficulté.
+            </p>
+            <p>
+                Il y a également la direction de la balle sur l’axe x qui change en
+                fonction de l’endroit où il y a eu un impact sur la barre (variable
+                game.ball.vel.x). Par exemple, plus la balle tape sur la droite de la
+                barre, plus elle partira vers la droite.
+            </p>
+            <h2 id="_Toc38973027">
+                B. Inertie des raquettes
+            </h2>
+            <p align="center">
+                <img
+                        width="605"
+                        height="261"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image044.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 25 : Accélération des raquettes
+            </p>
+            <p>
+                Lorsqu’une raquette se déplace latéralement, sa vitesse accélère toutes les
+                50 millisecondes. Sa vitesse est ensuite remise à la vitesse de base à
+                chaque nouvel appui grâce à la fonction clearAcc qui permet de supprimer
+                les « setInterval » : « leftAcc » et « rightAcc ».
+            </p>
+            <h1 id="_Toc38973028">
+                VIII. Jokers
+            </h1>
+            <p align="center">
+                <img
+                        width="496"
+                        height="586"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image046.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 26 : Apparition des jokers
+            </p>
+            <p>
+                Cette fonction d’apparition des jokers est appelée dès que la balle touche
+                un côté du plateau. Un nombre entre 0 et 100 est généré aléatoirement, en
+                fonction de ce nombre, il y a un joker qui apparaitra ou non. Trois autres
+                nombres sont générés aléatoirement afin de créer une position aléatoire
+                pour ce joker. Ces 3 nombres seront passés en paramètres aux fonctions de
+                création de modèle de joker que l’on peut retrouver sur la figure 15. Dès
+                que la balle entre en contact avec un joker, ce joker s’active en fonction
+                du dernier joueur ayant touché la balle.
+            </p>
+            <h2 id="_Toc38973029">
+                A. Allongement/Rétrécissement des raquettes
+            </h2>
+            <p align="center">
+                <img
+                        width="604"
+                        height="210"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image048.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 27 : Activation du joker Allongement de raquette
+            </p>
+            <p align="center">
+                <img
+                        width="606"
+                        height="262"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image050.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 28 : Allongement de raquette
+            </p>
+            <p>
+                Le joker Allongement de raquette permet au dernier joueur qui a touché la
+                balle d’agrandir sa raquette pour 5 secondes. Pour cela, je supprime sa
+                raquette avant de la recréer avec de nouvelles dimensions. Je créé alors un
+                timing de 5 sec dans lequel la raquette redeviendra normale. S’il y a déjà
+                un timer il est supprimé et recréé afin de bénéficier de 5 secondes
+                supplémentaires avec une plus grande raquette.
+            </p>
+            <p>
+                Le principe est le même pour le joker Rétrécissement de raquette sauf qu’il
+                permet au joueur ayant touché le joker de réduire la raquette de
+                l’adversaire pendant 5 secondes. Toute la réalisation est la même, que ce
+                soit pour le changement de raquette ou pour la mise en place du timer.
+            </p>
+            <h2 id="_Toc38973030">
+                B. Bouclier supplémentaire
+            </h2>
+            <p align="center">
+                <img
+                        width="605"
+                        height="228"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image052.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 29 : Activation du joker Bouclier
+            </p>
+            <p>
+                Ce joker permet au joueur qui le touche d’obtenir un bouclier
+                supplémentaire s’il avait déjà perdu le sien. Pour réaliser cela, je
+                sélectionne le joueur ayant touché la balle en dernier et si son bouclier
+                n’est plus actif alors il est remis en place en générant à nouveau son
+                modèle et en passant le booléen du bouclier à « true » à nouveau.
+            </p>
+            <h2 id="_Toc38973031">
+               C. Destruction du bouclier adverse
+            </h2>
+            <p align="center">
+                <img
+                        width="605"
+                        height="204"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image054.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 30 : Activation du joker Destruction de bouclier adverse
+            </p>
+            <p>
+                Ce joker permet au joueur qui le touche de détruire le bouclier de
+                l’adversaire s’il en possède un. Pour cela, je supprime tout simplement le
+                modèle du bouclier de la scène s’il était actif et je passe son booléen à «
+                false ».
+            </p>
+            <br clear="all"/>
+            <h1 id="_Toc38973032">
+                IX. Intelligence artificielle de l’adversaire
+            </h1>
+            <p align="center">
+                <img
+                        width="605"
+                        height="122"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image056.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 31 : Position de l'adversaire
+            </p>
+            <p>
+                La position de la raquette de l’adversaire suit la balle sur l’axe x en
+                permanence afin de la renvoyer. La vitesse de la barre de l’adversaire
+                augmente en fonction du niveau comme on peur le voir dans le paragraphe
+                afin d’augmenter la difficulté. En effet, plus sa vitesse est élevée, plus
+                il est fort et renvoie la balle.
+            </p>
+            <h1 id="_Toc38973033">
+                X. Musique et sons
+            </h1>
+            <h2 id="_Toc38973034">
+                A. Sons
+            </h2>
+            <p>
+                Le son game.impact est joué à chaque fois que la balle entre en collision
+                avec une extrémité verticale du terrain ou avec une raquette. Ce son varie
+                en fonction du niveau, niveau 1 : son de ballon de football, niveau 2 : son
+                de balle de tennis, niveau 3 : son de ballon de basketball.
+            </p>
+            <p>
+                Il y a également des sons de joker qui sont joués dès qu’un joker s’active
+                lors d’une collision avec la balle comme on peut le voir sur la figure 30
+                par exemple avec le « game.joker.destruction.sound.play() ».
+            </p>
+            <br clear="all"/>
+            <h2 id="_Toc38973035">
+                B. Musique
+            </h2>
+            <p align="center">
+                <img
+                        width="605"
+                        height="149"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image058.png"
+                />
+            </p>
+            <p align="center">
+                Figure 32 : Création de la musique de fond
+            </p>
+            <p align="center">
+                <img
+                        width="450"
+                        height="236"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image059.jpg"
+                />
+            </p>
+            <p align="center">
+                Figure 33 : Activation de la musique de fond
+            </p>
+            <p>
+                La musique de fond est activée lorsque l’on appuie sur la touche S. Elle
+                peut également être désactivée en rappuyant sur cette touche. C’est tout
+                simplement un format MP3 qui est stocké dans un listener qui sera joué ou
+                arrêté.
+            </p>
+            <h1 id="_Toc38973036">
+                XI. Triche
+            </h1>
+            <h2 id="_Toc38973037">
+                A. Mode invincible
+            </h2>
+            <p align="center">
+                <img
+                        width="315"
+                        height="191"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image060.png"
+                />
+            </p>
+            <p align="center">
+                Figure 34 : Activation du mode invincible
+            </p>
+            <p>
+                Le mode invincible peut être activé en appuyant sur la touche i, il permet
+                au joueur de ne plus perdre le moindre point lorsqu’il est activé. Pour
+                cela, un booléen invincible est passé à « true ».
+            </p>
+            <p align="center">
+                <img
+                        width="465"
+                        height="123"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image061.png"
+                />
+            </p>
+            <p align="center">
+                Figure 35 : Fonctionnement du mode invincible
+            </p>
+            <p>
+                Ce code est extrait de la fonction gérant les collisions du côté du joueur.
+                Comme on peut le constater lorsque le mode invincible est activé, le joueur
+                ne peut pas perdre de point ou de bouclier et la balle repart simplement
+                vers le côté opposé sans changement de direction sur l’axe x mais prend
+                quand même de la vitesse comme lors de chaque impact.
+            </p>
+            <h2 id="_Toc38973038">
+                B. Apparition d’un joker
+            </h2>
+            <p align="center">
+                <img
+                        width="228"
+                        height="84"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image062.png"
+                />
+            </p>
+            <p align="center">
+                Figure 36 : Activation de l'apparition d'un joker
+            </p>
+            <p>
+                Un appui sur la touche j permet de tenter de faire apparaitre un joker. En
+                effet, la fonction apparitionJoker génère un nombre aléatoire entre 0 et
+                100 permettant de savoir si elle affiche ou non un joker.
+            </p>
+            <h2 id="_Toc38973039">
+               C. Destruction du bouclier de l’adversaire
+            </h2>
+            <p align="center">
+                <img
+                        width="385"
+                        height="149"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image063.png"
+                />
+            </p>
+            <p align="center">
+                Figure 37 : Activation de la destruction du bouclier de l'adversaire
+            </p>
+            <p>
+                Un appui sur la touche k permet de détruire le bouclier de l’adversaire
+                s’il était encore actif. De la même manière que pour le joker, il suffit de
+                supprimer le modèle du bouclier et de passer le booléen le représentant à «
+                false ».
+            </p>
+            <h2 id="_Toc38973040">
+                D. Ralentissement de l’adversaire
+            </h2>
+            <p align="center">
+                <img
+                        width="396"
+                        height="404"
+                        src="file:///C:/Users/maxca/AppData/Local/Temp/msohtmlclip1/01/clip_image064.png"
+                />
+            </p>
+            <p align="center">
+                Figure 38 : Activation du mode ralenti de l'adversaire
+            </p>
+            <p>
+                Un appui sur la touche r permet d’activer ou de désactiver le mode ralenti
+                de l’adversaire. Cela ralentira grandement la raquette de l’adversaire
+                avant de la faire repasser à la normale en fonction du niveau dès que la
+                touche est réactivée.
+            </p>
+        </div>
+
+    </div>
+
+</body>
+
+
+</html>

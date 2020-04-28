@@ -1,0 +1,39 @@
+html{
+    font-family: Calibri;
+}
+
+head.title{
+    margin-left:20%;
+}
+
+#all{
+    width:100%;
+}
+
+#tableMatieres {
+    float:left;
+    width:20%;
+    heightm : 100%;
+    position:fixed;
+    top: 0%;
+    line-height: 150%;
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+#rapport {
+    margin-left:20%;
+}
+
+a.titre1{
+    font-size: 18px;
+}
+
+a.titre2{
+    margin-left:30px;
+    font-size: 14px;
+}
+
+
+
+
