@@ -34,6 +34,12 @@ a.titre2{
     font-size: 14px;
 }
 
+video{
+    position: relative;
+    top: 50%;
+    transform: translateY(+50%);
+}
+
 
 
 
