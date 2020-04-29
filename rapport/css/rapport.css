@@ -37,7 +37,6 @@ a.titre2{
 video{
     position: relative;
     top: 50%;
-    transform: translateY(+50%);
 }
 
 
