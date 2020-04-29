@@ -22,7 +22,7 @@
                     I. Déroulement du jeu
                 </a><br>
                 <a href="#02" class="titre2">
-                    A. But, gain de manche, changement de niveau et fin de jeu
+                    A. Score, changement de niveau et fin de jeu
                 </a>
             </p>
 
@@ -121,7 +121,7 @@
 
             <p>
                 <a href="#024" class="titre1">
-                    X. Musique et sons
+                    X. Sons et musique
                 </a><br>
                 <a href="#025" class="titre2">
                     A. Sons
@@ -177,7 +177,7 @@
                 des fichiers en ligne afin de pouvoir afficher le jeu sans erreurs CORS.
             </p>
             <p>
-                Dans cette classe, il y a deux autres classes nommées « player » et «
+                Dans cette classe, il y a d'autres classes dont « player » et «
                 offender » qui contiennent les attributs du joueur humain et du joueur à
                 l’intelligence artificielle. Les attributs sont par exemple :
             </p>
@@ -209,26 +209,31 @@
                 Figure 1 : Classe joueur
             </p>
             <p>
-                Il y a une classe « ball » qui représente la balle et tous ses attributs, à
-                savoir, ses dimensions, sa vitesse, sa position et son modèle physique.
+                Dans la classe game il y a également :
             </p>
-            <p>
-                Il y a une classe « stage » qui représente le terrain et ses attributs,
-                tels que ses dimensions, le niveau auquel est le joueur et son modèle
-                physique.
-            </p>
-            <p>
-                Enfin, il y a une classe « joker » contenant, elle-même, plusieurs classes
-                représentant les différents types de jokers. Ces classes sont composées de
-                4 attributs : les 2 faces pour le modèle physique, un booléen pour savoir
-                si le joker est actuellement affiché sur le terrain et une variable à laquelle sera
-                attribué leur son.
-            </p>
+            <ul>
+                <li>
+                    Une classe « ball » qui représente la balle et tous ses attributs, à
+                    savoir, ses dimensions, sa vitesse, sa position et son modèle physiqueS
+                </li>
+                <li>
+                    Une classe « stage » qui représente le terrain et ses attributs,
+                    tels que ses dimensions, le niveau auquel est le joueur et son modèle
+                    physique
+                </li>
+                <li>
+                    Une classe « joker » contenant, elle-même, plusieurs classes
+                    représentant les différents types de jokers. Ces classes sont composées de
+                    4 attributs : les 2 faces pour le modèle physique, un booléen pour savoir
+                    si le joker est actuellement affiché sur le terrain et une variable à laquelle sera
+                    attribué leur son.
+                </li>
+            </ul>
             <h2 id="02">
-                A. But, gain de manche, changement de niveau et fin de jeu
+                A. Score, changement de niveau et fin de jeu
             </h2>
             <p>
-                Lorsqu’un joueur marque un but, la fonction game.reset() est appelée avec
+                Lorsqu’un joueur marque un point, la fonction game.reset() est appelée avec
                 le nom du joueur en paramètre afin de relancer le jeu avec la balle au
                 centre, de faire toutes les modifications nécessaires et de remettre un
                 bouclier au perdant.
@@ -241,12 +246,12 @@
                 />
             </p>
             <p align="center">
-                Figure 2 : But du joueur Player et affichage de son score
+                Figure 2 : Point pour le joueur Player et affichage de son score
             </p>
             <p>
-                Lorsque le joueur gagne une manche, il gagne le droit de passer au niveau
+                Lorsque le joueur gagne un niveau, il gagne le droit de passer au niveau
                 suivant. Pour cela, les modèles de l’adversaire correspondant au niveau
-                actuel sont supprimés pour laisser à place aux modèles de l’adversaire du
+                actuel sont supprimés pour laisser place aux modèles de l’adversaire du
                 niveau suivant.
             </p>
             <p align="center">
@@ -267,7 +272,7 @@
             <p>
                 Voici un exemple d’une partie des modèles du niveau 1 qui sont supprimés
                 pour laisser place à ceux du niveau 2. En effet, lors d’un changement de
-                niveau, sont modifiés ou supprimés et recréés :
+                niveau, les choses suivantes sont modifiés ou, supprimés et recréés :
             </p>
             <ul>
                 <li>
@@ -302,16 +307,16 @@
                 Figure 4 : Fin du jeu
             </p>
             <p>
-                Comme on le voit ci-dessus le jeu peut se terminer de deux façons :
+                Comme on le voit ci-dessus le jeu se termine lorsque l'un des joueur a inscrit 3 points :
             </p>
             <ul>
                 <li>
-                    Une victoire de l’adversaire (1<sup>er</sup> if), dans ce cas un
+                    Une victoire de l’adversaire (1<sup>er</sup> if) : dans ce cas un
                     message de défaite apparaît et les variables game.restartNew et
                     game.stop passent à true.
                 </li>
                 <li>
-                    Une victoire du joueur (2<sup>ème</sup> if), dans ce cas un message de
+                    Une victoire du joueur (2<sup>ème</sup> if) : dans ce cas un message de
                     victoire apparaît et les variables game.restartNew et game.stop passent
                     à true.
                 </li>
@@ -363,10 +368,10 @@
             <p>
                 Cette fonction permet le passage en plein écran pour de nombreux
                 navigateurs différents. Elle est appelée dès que l’on appuie sur la touche
-                F. Elle permet de récupérer d’abord l’élément a passer en plein avant de
-                faire la requête de passage en plein écran qui peut varier selon les
-                différents navigateurs. Ces navigateurs gèrent le mode plein écran et
-                permettent de quitter ce mode en appuyant sur la touche echap.
+                F. Elle permet de récupérer l’élément à passer en plein écran avant de
+                lancer la requête qui peut varier selon les différents navigateurs.
+                Les navigateurs gèrent le mode plein écran et permettent de quitter
+                ce mode en appuyant sur la touche echap.
             </p>
             <h2 id="06">
                 C. Capture d’écran
@@ -408,16 +413,17 @@
                 Figure 8 : Création du décor
             </p>
             <p>
-                Pour représenter le fond, j’ai créé une « Box » qui va entourer le terrain.
-                Cette « Box » est un cube et possède donc 6 faces, sur chacune de ces
-                faces, il y a une image. Ces images permettent de représenter un décor qui
-                donne une impression d’horizon.
+                Pour représenter le fond, j’ai créé une « Box » qui entoure le terrain.
+                Cette « Box » est un cube et possède donc 6 faces. Sur chacune des
+                faces, il y a une image. Ces images permettent de représenter un décor donnant
+                une impression d’horizon.
             </p>
             <h2 id="09">
                 B. Représentation de l’adversaire
             </h2>
             <p align="center">
                 <img
+                        id=9
                         width="906"
                         height="201"
                         src="https://raw.githubusercontent.com/maxcrn/SIA/master/rapport/images/9.png"
@@ -432,13 +438,12 @@
                 Figure 9 : Création de l'adversaire
             </p>
             <p>
-                Cela permet de créer le modèle de l’adversaire grâce à l’image
-                correspondant au niveau 1. Un simple polygone placé de façon à être face au
+                Je crée ici le modèle de l’adversaire grâce à l’image correspondant au niveau 1
+                représentée sur un simple polygone placé de façon à être face au
                 joueur. A chaque changement de niveau ce modèle est supprimé et recréé afin
                 de représenter le nouvel adversaire. Ces adversaires sont basés sur le
-                thème du sport comme pour le jeu dans sa globalité (Niveau 1 : Football
-                avec Zinédine Zidane, Niveau 2 : Tennis avec Roger Federer et Niveau 3 :
-                Basketball avec LeBron James).
+                thème du sport (Niveau 1 : Football avec Zinédine Zidane, Niveau 2 :
+                Tennis avec Roger Federer et Niveau 3 : Basketball avec LeBron James).
             </p>
             <h2 id="010">
                 C. Divers modèles du jeu
@@ -460,7 +465,7 @@
             </p>
             <p>
                 Cette fonction permet la création de la raquette d’un joueur en spécifiant
-                ses 3 dimensions longueur, largeur, hauteur. Elle permet aussi de remplacer
+                ses 3 dimensions : longueur, largeur, hauteur. Elle permet aussi de remplacer
                 la raquette d’un joueur si elle est déjà créée (cela sera utile pour les
                 jokers).
             </p>
@@ -490,7 +495,7 @@
                 Figure 11 : Création de la balle et les 3 balles disponibles dans le jeu
             </p>
             <p>
-                Cela permet de créer la balle grâce à un programme permettant de générer
+                Je crée ici la balle grâce à un programme permettant de générer
                 des balles de sport (ballon de football sur l’exemple correspondant au
                 premier niveau).
             </p>
@@ -507,12 +512,11 @@
                 />
             </p>
             <p align="center">
-                Figure 12 : Création du terrain et exemple de terrain (Niveau 3)
+                Figure 12 : Création du terrain (niveau 1) et exemple de terrain (Niveau 3)
             </p>
             <p>
-                Cela permet de créer le terrain grâce à l’image correspondant au niveau 1.
-                Un simple polygone avec une image de terrain de sport (terrain de football
-                sur l’exemple correspondant au premier niveau).
+                Je crée ici le terrain grâce à l’image correspondant au niveau :
+                un simple polygone avec une image de terrain de sport.
             </p>
             <p align="center">
                 <img
@@ -530,8 +534,8 @@
                 Figure 13 : Création d'un bouclier (Offender)
             </p>
             <p>
-                Cela permet de créer le modèle un bouclier (celui de Offender) au début de
-                la partie. Un polygone placé à l’extrémité du terrain juste derrière la
+                Je crée ici le modèle d'un bouclier (celui de Offender) au début de
+                la partie : un polygone placé à l’extrémité du terrain juste derrière la
                 raquette dont on modifie l’opacité pour lui donner une apparence de
                 bouclier en verre.
             </p>
@@ -567,10 +571,10 @@
                 Figure 14 : Création du modèle d'un joker et les 4 modèles de joker
             </p>
             <p>
-                Fonction permettant l’ajout d’un joker avec ses coordonnées (x, y, z). Les
+                Cette fonction permet l’ajout d’un joker avec ses coordonnées (x, y, z). Les
                 jokers seront représentés avec deux polygones dos à dos qui pivotent afin
-                d’afficher les images des deux côtés. Ce sont des images png sans fond, de
-                ce fait le paramètre « transparent : true » permet de leur donner la forme
+                d’afficher les images des deux côtés. Ce sont des images png sans fond,
+                le paramètre « transparent : true » permet de leur donner la forme
                 de l’image sans fond.
             </p>
             <p align="center">
@@ -590,7 +594,7 @@
                 Figure 15 : Initialisation du texte, du son du niveau et image du texte du niveau
             </p>
             <p>
-                Je créé ici le modèle de texte qui affichera le niveau (Niveau 1). Ce texte
+                Je créé ici le modèle de texte qui affichera le niveau. Ce texte
                 est affiché grâce à un « TextGeometry » auquel on attribue une police sous
                 format json. Il a également un nom afin de pouvoir le retrouver dans la
                 scène et le supprimer pour le mettre à jour en le recréant.
@@ -617,16 +621,16 @@
             </p>
             <ul>
                 <li>
-                    Début de partie et les scores sont à 0 alors il y a juste un affichage
+                    Début de partie avec les scores à 0 : il y a juste un affichage
                     des scores qui s’effectue.
                 </li>
                 <li>
-                    But de « player », alors le score a été effacé juste avant afin d’être
+                    But de « player » : le score a été effacé juste avant afin d’être
                     recréé ici.
                 </li>
             </ul>
             <p>
-                Ce score est affiché grâce à la même technologie que le Niveau décrite
+                Ce score est affiché grâce à la même technologie que le niveau décrite
                 ci-dessus.
             </p>
             <h1 id="011">
@@ -637,9 +641,8 @@
             </h2>
             <p>
                 Comme il est possible de le voir sur la <a href="#16">Figure 16</a>, dès qu’un joueur marque
-                on ajoute un élément « game.player.goalText » à game.goalContainer. Cet
-                élément est un message signifiant qu’un but vient d’être inscrit. Il
-                disparait après une seconde.
+                on ajoute un élément « game.player.goalText » à « game.goalContainer ». Cela permet d'afficher un message
+                signifiant qu'un but vient d'être inscrit. Il disparait après une seconde.
             </p>
             <p>
                 Il y a un message au début du jeu comme on peut le voir sur la <a href="#15">Figure 15</a>
@@ -676,9 +679,9 @@
             </p>
             <p>
                 L’aide s’affichera en haut à gauche de la fenêtre avec un appui sur la
-                touche H, il disparaitra avec un nouvel appui sur H. Cet aide permet
-                d’afficher tous les raccourcis clavier disponibles. Comme tous les texte
-                précédents il est afficher dans une « div » créé spécialement à cet effet.
+                touche H, elle disparaitra avec un nouvel appui sur H. Cette aide permet
+                d’afficher tous les raccourcis clavier disponibles. Comme tous les textes
+                précédents il est affiché dans une « div » créée spécialement à cet effet.
             </p>
             <h1 id="014">
                 V. Points de vue caméra
@@ -714,8 +717,8 @@
                 elle est fixe. La deuxième permet un affichage suivant la barre du joueur.
                 Pour réaliser cette caméra, une fonction attribuant les positions de la
                 barre à la caméra est appelée en boucle toutes les 20 millisecondes. Afin
-                de passer d’une caméra l’autre il faut appuyer sur &amp; pour la caméra 1
-                et é pour la caméra 2.
+                de passer d’une caméra à l’autre il faut appuyer sur la touche &amp; pour la caméra 1
+                et la touche é pour la caméra 2.
             </p>
             <br clear="all"/>
             <h1 id="015">
@@ -752,20 +755,20 @@
             </p>
             <ul>
                 <li>
-                    Sa raquette est placée au même endroit alors la balle est renvoyée avec
+                    Sa raquette est placée au même endroit : la balle est renvoyée avec
                     une accélération, en inversant sa vitesse sur l’axe z (multipliée par -1)
                     et en donnant une vitesse sur l’axe x selon l’endroit de la raquette où
                     elle rebondit.
                 </li>
                 <li>
-                    Sa raquette n’est pas au bon endroit mais il dispose d’un bouclier alors
-                    la balle sera renvoyée de la même manière mais comme si cela été un simple
-                    rebond mais avec tout de même une accélération (pas de changement
+                    Sa raquette n’est pas au bon endroit mais il dispose d’un bouclier :
+                    la balle sera renvoyée de la même manière comme le cas d'un simple
+                    rebond mais avec une accélération (pas de modification
                     d’orientation sur l’axe x). Son bouclier sera désactivé.
                 </li>
                 <li>
-                    Sa raquette n’est pas au bon endroit et il n’a pas de bouclier, alors le
-                    joueur adverse marque un point et le jeu recommence.
+                    Sa raquette n’est pas au bon endroit et il n’a pas de bouclier : le
+                    joueur adverse marque un point.
                 </li>
             </ul>
             <p align="center">
@@ -779,8 +782,8 @@
                 Figure 21 : Collisions sur les côtés du plateau
             </p>
             <p>
-                Comme on peut le voir ci-dessus, la même technologie avec les coordonnées
-                est utilisée pour les collisions sur les côtés du plateau.
+                Pour les collisions sur les côtés du plateau, la même technologie avec
+                les coordonnées est utilisée.
             </p>
             <p align="center">
                 <img
@@ -809,8 +812,8 @@
             </p>
             <p>
                 Afin de renvoyer la balle, le joueur doit pouvoir déplacer sa raquette, il
-                peut le faire grâce aux touches latérales comme on peut le voir. De plus
-                chaque déplacement créé une accélération pour la raquette du joueur.
+                peut le faire grâce aux touches latérales. Chaque déplacement crée une accélération
+                pour la raquette du joueur.
             </p>
             <h1 id="016">
                 VII. Dynamique
@@ -829,17 +832,16 @@
                 Figure 24 : Impact de la balle sur une raquette
             </p>
             <p>
-                Comme on peut le voir, dès qu’une balle entre en collision avec une
-                raquette sa vitesse est augmentée (game.ball.vel.z -= 0.0025). Cette
-                accélération est légère mais si l’échange dure elle se fait ressentir. De
+                Dès qu’une balle entre en collision avec une raquette sa vitesse
+                est augmentée (game.ball.vel.z -= 0.0025). Cette accélération est
+                légère mais si l’échange dure elle se fait ressentir. De
                 plus, la vitesse augmente pour chaque niveau afin d’augmenter la
                 difficulté.
             </p>
             <p>
-                Il y a également la direction de la balle sur l’axe x qui change en
-                fonction de l’endroit où il y a eu un impact sur la barre (variable
-                game.ball.vel.x). Par exemple, plus la balle tape sur la droite de la
-                barre, plus elle partira vers la droite.
+                La direction de la balle sur l’axe x change en fonction de l’endroit de l'impact sur la raquette
+                (variable game.ball.vel.x). Par exemple, plus la balle tape sur la droite de la
+                raquette, plus elle partira vers la droite.
             </p>
             <h2 id="018">
                 B. Inertie des raquettes
@@ -855,8 +857,8 @@
                 Figure 25 : Accélération des raquettes
             </p>
             <p>
-                Lorsqu’une raquette se déplace latéralement, sa vitesse accélère toutes les
-                50 millisecondes. Sa vitesse est ensuite remise à la vitesse de base à
+                Lorsqu’une raquette se déplace latéralement, sa vitesse s'accélère toutes les
+                50 millisecondes. Elle est ensuite remise à sa valeur de base à
                 chaque nouvel appui grâce à la fonction clearAcc qui permet de supprimer
                 les « setInterval » : « leftAcc » et « rightAcc ».
             </p>
@@ -883,8 +885,8 @@
             </p>
             <p>
                 Cette fonction d’apparition des jokers est appelée dès que la balle touche
-                un côté du plateau. Un nombre entre 0 et 100 est généré aléatoirement, en
-                fonction de ce nombre, il y a un joker qui apparaitra ou non. Trois autres
+                un côté du plateau. Un nombre entre 0 et 100 est généré aléatoirement. En
+                fonction de ce nombre, un joker qui apparaitra ou non. Trois autres
                 nombres sont générés aléatoirement afin de créer une position aléatoire
                 pour ce joker. Ces 3 nombres seront passés en paramètres aux fonctions de
                 création de modèle de joker que l’on peut retrouver sur la <a href="#14">figure 14</a> . Dès
@@ -917,13 +919,13 @@
             <p>
                 Le joker Allongement de raquette permet au dernier joueur qui a touché la
                 balle d’agrandir sa raquette pour 5 secondes. Pour cela, je supprime sa
-                raquette avant de la recréer avec de nouvelles dimensions. Je créé alors un
-                timing de 5 sec dans lequel la raquette redeviendra normale. S’il y a déjà
+                raquette avant de la recréer avec de nouvelles dimensions. Je crée alors un
+                timer de 5 sec au bout duquel la raquette redeviendra normale. S’il y a déjà
                 un timer il est supprimé et recréé afin de bénéficier de 5 secondes
                 supplémentaires avec une plus grande raquette.
             </p>
             <p>
-                Le principe est le même pour le joker Rétrécissement de raquette sauf qu’il
+                Le principe est le même pour le joker Rétrécissement de raquette, il
                 permet au joueur ayant touché le joker de réduire la raquette de
                 l’adversaire pendant 5 secondes. Toute la réalisation est la même, que ce
                 soit pour le changement de raquette ou pour la mise en place du timer.
@@ -944,9 +946,9 @@
             <p>
                 Ce joker permet au joueur qui le touche d’obtenir un bouclier
                 supplémentaire s’il avait déjà perdu le sien. Pour réaliser cela, je
-                sélectionne le joueur ayant touché la balle en dernier et si son bouclier
+                sélectionne le joueur ayant touché la balle en dernier. Si son bouclier
                 n’est plus actif alors il est remis en place en générant à nouveau son
-                modèle et en passant le booléen du bouclier à « true » à nouveau.
+                modèle et en passant le booléen du bouclier à « true » de nouveau.
             </p>
             <h2 id="022">
                C. Destruction du bouclier adverse
@@ -985,11 +987,11 @@
             <p>
                 La position de la raquette de l’adversaire suit la balle sur l’axe x en
                 permanence afin de la renvoyer. La vitesse de la barre de l’adversaire
-                augmente en fonction du niveau afin d’augmenter la difficulté. En effet,
-                plus sa vitesse est élevée, plus il est fort et renvoie la balle.
+                augmente en fonction du niveau afin d’augmenter la difficulté.
+                Plus sa vitesse est élevée, plus il est fort et renvoie la balle.
             </p>
             <h1 id="024">
-                X. Musique et sons
+                X. Sons et musique
             </h1>
             <h2 id="025">
                 A. Sons
@@ -997,11 +999,11 @@
             <p>
                 Le son game.impact est joué à chaque fois que la balle entre en collision
                 avec une extrémité verticale du terrain ou avec une raquette. Ce son varie
-                en fonction du niveau, niveau 1 : son de ballon de football, niveau 2 : son
+                en fonction du niveau : niveau 1 : son de ballon de football, niveau 2 : son
                 de balle de tennis, niveau 3 : son de ballon de basketball.
             </p>
             <p>
-                Il y a également des sons de joker qui sont joués dès qu’un joker s’active
+                Il y a également des sons de joker joués dès qu’un joker s’active
                 lors d’une collision avec la balle comme on peut le voir sur la <a href="#30">Figure 30</a>
                 par exemple avec le « game.joker.destruction.sound.play() ».
             </p>
@@ -1091,9 +1093,8 @@
             </p>
             <p>
                 La musique de fond est activée lorsque l’on appuie sur la touche S. Elle
-                peut également être désactivée en rappuyant sur cette touche. C’est tout
-                simplement un format MP3 qui est stocké dans un listener qui sera joué ou
-                arrêté.
+                peut également être désactivée en appuyant sur cette touche. C’est
+                un format MP3 stocké dans un listener qui sera joué ou arrêté.
             </p>
             <h1 id="027">
                 XI. Triche
@@ -1140,10 +1141,9 @@
             </p>
             <p>
                 Ce code est extrait de la fonction gérant les collisions du côté du joueur.
-                Comme on peut le constater lorsque le mode invincible est activé, le joueur
-                ne peut pas perdre de point ou de bouclier et la balle repart simplement
-                vers le côté opposé sans changement de direction sur l’axe x mais prend
-                quand même de la vitesse comme lors de chaque impact.
+                Lorsque le mode invincible est activé, le joueur ne peut pas perdre de point
+                ou de bouclier et la balle repart simplement vers le côté opposé sans changement
+                de direction sur l’axe x mais prend quand même de la vitesse comme lors de chaque impact.
             </p>
             <h2 id="029">
                 B. Apparition d’un joker
@@ -1159,9 +1159,8 @@
                 Figure 36 : Activation de l'apparition d'un joker
             </p>
             <p>
-                Un appui sur la touche j permet de tenter de faire apparaitre un joker. En
-                effet, la fonction apparitionJoker génère un nombre aléatoire entre 0 et
-                100 permettant de savoir si elle affiche ou non un joker.
+                Un appui sur la touche j permet de tenter de faire apparaitre
+                un joker en activant la fonction apparitionJoker.
             </p>
             <h2 id="030">
                C. Destruction du bouclier de l’adversaire
@@ -1197,9 +1196,9 @@
             </p>
             <p>
                 Un appui sur la touche r permet d’activer ou de désactiver le mode ralenti
-                de l’adversaire. Cela ralentira grandement la raquette de l’adversaire
-                avant de la faire repasser à la normale en fonction du niveau dès que la
-                touche est réactivée.
+                de l’adversaire. Lorsqu'il est activé, ce mode permet de ralentir la raquette
+                de l’adversaire avant de la faire repasser à la normale en fonction du niveau
+                dès qu'un nouvel appui sur la touche est effectué.
             </p>
             <h1 id="032">
                 XII. Les petits plus
