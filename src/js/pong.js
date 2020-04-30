@@ -549,7 +549,7 @@ function onWindowResize() {
 
 // Aide
 
-game.helpText.textContent = ""
+game.helpText.textContent = "";
 
 // Elements de jeu
 
@@ -1190,7 +1190,7 @@ game.reset();
 
 var elem = document.documentElement;
 
-function openFullscreen() {
+function fullScreen() {
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
     } else if (elem.mozRequestFullScreen) {
@@ -1258,7 +1258,7 @@ document.onkeydown=function(e){
 
     // Plein écran : f
     if(e.keyCode == 70){
-        openFullscreen();
+        fullScreen();
     }
 
     // Screenshot : p
