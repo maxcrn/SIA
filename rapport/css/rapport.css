@@ -6,6 +6,41 @@ head.title{
     margin-left:20%;
 }
 
+div#all{
+    background-image: url("https://raw.githubusercontent.com/maxcrn/SIA/master/rapport/images/background.jpg");
+}
+
+h1.header{
+    font-size:60px;
+    color: #004866;
+}
+
+h2.header{
+    font-size:30px;
+    color: #004866;
+}
+
+h2.tableMatieres{
+    color: #4b0000;
+}
+
+h1{
+    color: #005b87;
+}
+
+h2{
+    color: #0075af;
+}
+
+p{
+    color: #002738;
+}
+
+ul{
+    color: #002738;
+}
+
+
 #all{
     width:100%;
 }
@@ -25,6 +60,10 @@ head.title{
     margin-left:20%;
 }
 
+a{
+    color: #720101;
+}
+
 a.titre1{
     font-size: 18px;
 }
@@ -34,10 +73,6 @@ a.titre2{
     font-size: 14px;
 }
 
-video{
-    position: relative;
-    top: 50%;
-}
 
 
 
